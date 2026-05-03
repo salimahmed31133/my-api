@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-CFGFT13CS4"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-CFGFT13CS4');
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FreeSave.com - Access</title>
+    <link rel="icon" type="image/png" href="ns-logo.png">
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background: #f8f9fa; margin: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; padding-bottom: 40px; }
+        
+        /* হেডার ডিজাইন */
+        header { width: 100%; height: 60px; background: #fff; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; box-sizing: border-box; border-bottom: 1px solid #eee; }
+        .header-brand { font-size: 24px; font-weight: 800; color: #000; text-decoration: none; }
+        .menu-btn { cursor: pointer; display: flex; flex-direction: column; gap: 5px; padding: 10px; }
+        .menu-btn span { width: 25px; height: 3px; background: #000; border-radius: 2px; }
+
+        /* সাইড মেনু এবং ভাষা */
+        .side-menu { height: 100%; width: 0; position: fixed; z-index: 2000; top: 0; right: 0; background-color: #fff; overflow-y: auto; transition: 0.4s; box-shadow: -2px 0 10px rgba(0,0,0,0.1); }
+        .menu-close { padding: 20px; font-size: 25px; cursor: pointer; text-align: right; display: block; }
+        .menu-item { padding: 15px 25px; font-size: 18px; font-weight: bold; border-bottom: 1px solid #eee; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+        .lang-container { display: none; background: #fdfdfd; flex-direction: column; }
+        .lang-option { padding: 12px 30px; text-decoration: none; color: #333; border-bottom: 1px solid #f1f1f1; font-size: 15px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+        
+        /* সিলেক্ট করা ভাষার কালো টিক চিহ্ন */
+        .lang-option.active { font-weight: bold; color: #000; }
+        .tick { display: none; width: 18px; height: 18px; background: #000; color: #fff; border-radius: 50%; font-size: 11px; text-align: center; line-height: 18px; }
+        .active .tick { display: block; }
+
+        /* অরিজিনাল কোডের স্টাইল */
+        .logo-container { margin-top: 40px; display: flex; justify-content: center; }
+        .logo-circle { width: 110px; height: 110px; background: #000; border: 3.5px solid #D4AF37; border-radius: 50%; display: flex; justify-content: center; align-items: center; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+        .logo-circle img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .site-link-wrapper { text-decoration: none; color: inherit; display: block; width: 90%; text-align: center; }
+        .site-name-top { font-size: 28px; font-weight: 800; color: #1a1a1a; margin-top: 15px; }
+        .disclaimer { font-size: 11px; color: #555; text-align: center; width: 85%; margin-top: 5px; margin-bottom: 35px; line-height: 1.5; }
+        .header-section { width: 85%; max-width: 400px; display: flex; justify-content: flex-end; margin-bottom: 10px; }
+        .header-link { color: #1a1a1a; font-size: 14px; font-weight: bold; cursor: pointer; text-decoration: none; border-bottom: 2px solid #1a1a1a; padding: 2px 0; }
+        .auth-card { background: white; padding: 35px 25px; border-radius: 30px; box-shadow: 0 10px 40px rgba(0,0,0,0.05); width: 85%; max-width: 400px; text-align: center; border: 1px solid #ddd; }
+        input { width: 100%; padding: 18px; margin: 12px 0 5px 0; border: 1px solid #eee; border-radius: 15px; box-sizing: border-box; font-size: 15px; outline: none; background: #fdfdfd; }
+        .pass-wrapper { position: relative; width: 100%; }
+        .toggle-txt { position: absolute; right: 15px; top: 28px; cursor: pointer; color: #1a1a1a; font-size: 10px; font-weight: 800; text-transform: uppercase; background: #eee; padding: 4px 7px; border-radius: 6px; user-select: none; }
+        .btn-container { display: flex; gap: 12px; margin-top: 25px; }
+        .auth-btn { background: #1a1a1a; color: #fff; border: 2px solid #D4AF37; padding: 18px; flex: 1; border-radius: 15px; font-size: 16px; font-weight: 800; cursor: pointer; transition: 0.2s; text-transform: uppercase; }
+        .ad-slot { width: 85%; max-width: 400px; height: 90px; background: #f0f0f0; border: 1px dashed #ccc; margin-top: 25px; border-radius: 15px; display: flex; align-items: center; justify-content: center; color: #888; font-size: 12px; }
+        .footer-links { margin-top: 25px; text-align: center; margin-bottom: 20px; }
+        .footer-links a { color: #999; font-size: 14px; text-decoration: none; border-bottom: 1px solid #ddd; padding-bottom: 2px; }
+        .trial-card { background: white; padding: 30px 20px; border-radius: 40px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); width: 85%; max-width: 400px; text-align: center; border: 1px solid #eee; margin-top: 10px; }
+        .trial-title { font-size: 18px; font-weight: 800; color: #1a1a1a; margin-bottom: 20px; }
+        .trial-btn { display: block; background: #1a1a1a; color: #fff; text-decoration: none; border: 2px solid #D4AF37; padding: 18px; border-radius: 25px; font-size: 20px; font-weight: 800; text-transform: uppercase; }
+        .modal { display: none; position: fixed; z-index: 3000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); }
+        .modal-content { background: white; margin: 15% auto; padding: 35px 25px; border-radius: 25px; width: 85%; max-width: 380px; text-align: center; position: relative; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="#" class="header-brand">FreeSave</a>
+        <div class="menu-btn" onclick="toggleSideMenu(true)">
+            <span></span><span></span><span></span>
+        </div>
+    </header>
+
+    <div id="sideMenu" class="side-menu">
+        <span class="menu-close" onclick="toggleSideMenu(false)">&times;</span>
+        <div class="menu-item" onclick="toggleLangList()">Language <span id="arrow">▾</span></div>
+        <div id="langList" class="lang-container">
+            <div class="lang-option" id="en" onclick="changeLang('en')">English <div class="tick">✓</div></div>
+            <div class="lang-option" id="bn" onclick="changeLang('bn')">বাংলা <div class="tick">✓</div></div>
+            <div class="lang-option" id="hi" onclick="changeLang('hi')">हिंदी <div class="tick">✓</div></div>
+            <div class="lang-option" id="id" onclick="changeLang('id')">Bahasa Indonesia <div class="tick">✓</div></div>
+            <div class="lang-option" id="vi" onclick="changeLang('vi')">Tiếng Việt <div class="tick">✓</div></div>
+            <div class="lang-option" id="ms" onclick="changeLang('ms')">Bahasa Malaysia <div class="tick">✓</div></div>
+            <div class="lang-option" id="es" onclick="changeLang('es')">Español <div class="tick">✓</div></div>
+            <div class="lang-option" id="fr" onclick="changeLang('fr')">Français <div class="tick">✓</div></div>
+            <div class="lang-option" id="de" onclick="changeLang('de')">German <div class="tick">✓</div></div>
+            <div class="lang-option" id="it" onclick="changeLang('it')">Italiano <div class="tick">✓</div></div>
+            <div class="lang-option" id="pt" onclick="changeLang('pt')">Português <div class="tick">✓</div></div>
+            <div class="lang-option" id="nl" onclick="changeLang('nl')">Nederlands <div class="tick">✓</div></div>
+            <div class="lang-option" id="pl" onclick="changeLang('pl')">Polski <div class="tick">✓</div></div>
+            <div class="lang-option" id="ru" onclick="changeLang('ru')">Русский <div class="tick">✓</div></div>
+            <div class="lang-option" id="tr" onclick="changeLang('tr')">Türkçe <div class="tick">✓</div></div>
+            <div class="lang-option" id="ar" onclick="changeLang('ar')">العربية <div class="tick">✓</div></div>
+            <div class="lang-option" id="th" onclick="changeLang('th')">ไทย <div class="tick">✓</div></div>
+            <div class="lang-option" id="ko" onclick="changeLang('ko')">한국어 <div class="tick">✓</div></div>
+            <div class="lang-option" id="ja" onclick="changeLang('ja')">日本語 <div class="tick">✓</div></div>
+            <div class="lang-option" id="zh-CN" onclick="changeLang('zh-CN')">中文(简体) <div class="tick">✓</div></div>
+            <div class="lang-option" id="uk" onclick="changeLang('uk')">Українська <div class="tick">✓</div></div>
+            <div class="lang-option" id="ro" onclick="changeLang('ro')">Română <div class="tick">✓</div></div>
+            <div class="lang-option" id="el" onclick="changeLang('el')">Ελληνικά <div class="tick">✓</div></div>
+            <div class="lang-option" id="cs" onclick="changeLang('cs')">Čeština <div class="tick">✓</div></div>
+            <div class="lang-option" id="hu" onclick="changeLang('hu')">Magyar <div class="tick">✓</div></div>
+            <div class="lang-option" id="sv" onclick="changeLang('sv')">Svenska <div class="tick">✓</div></div>
+            <div class="lang-option" id="fi" onclick="changeLang('fi')">Suomi <div class="tick">✓</div></div>
+        </div>
+    </div>
+
+    <div class="logo-container">
+        <div class="logo-circle"><img src="ns-logo.png" alt="NS Logo"></div>
+    </div>
+    
+    <a href="https://freesave-app.github.io/" class="site-link-wrapper">
+        <div class="site-name-top">FreeSave.com</div>
+    </a>
+    
+    <div class="disclaimer">How you use it is your business and your responsibility.</div>
+    
+    <div class="header-section">
+        <a class="header-link" onclick="toggleAbout(true)">About Us</a>
+    </div>
+
+    <div class="auth-card">
+        <h2 id="headerTitle" style="font-size: 24px; font-weight: 800; margin-bottom: 25px;">WELCOME</h2>
+        <input type="text" id="userInput" placeholder="Mobile Number or Email" required>
+        <div class="pass-wrapper">
+            <input type="password" id="passInput" placeholder="Password" required>
+            <div class="toggle-txt" onclick="togglePass()">Show</div>
+        </div>
+        <div class="btn-container">
+            <button type="button" class="auth-btn" onclick="handleAuth('signup')">SIGN UP</button>
+            <button type="button" class="auth-btn" onclick="handleAuth('login')">LOG IN</button>
+        </div>
+    </div>
+
+    <div class="ad-slot">Advertisement Space (Google AdSense)</div>
+
+    <div class="footer-links">
+        <a href="privacy.html">Privacy Policy</a>
+    </div>
+
+    <div class="trial-card">
+        <div class="trial-title">Get 3 Free Downloads Per Day</div>
+        <a href="trial-dashboard.html" class="trial-btn">START FOR FREE</a>
+    </div>
+
+    <div id="aboutModal" class="modal">
+        <div class="modal-content">
+            <span style="font-size: 22px; font-weight: bold; color: #1a1a1a; margin-bottom: 15px; display: block;">FreeSave.com</span>
+            <p style="text-align: left; margin-bottom: 10px;">
+                <strong>Owner:</strong> <a href="https://www.facebook.com/profile.php?id=61554658855824" target="_blank" style="color:#000; font-weight:700; text-decoration:none;">Kayra Haque</a>
+            </p>
+            <p style="text-align: left; margin-bottom: 10px;">
+                <strong>Email:</strong> <a href="mailto:sitefreedownloader@gmail.com" style="color:#000; font-weight:700; text-decoration:underline;">sitefreedownloader@gmail.com</a>
+            </p>
+            <button type="button" class="auth-btn" onclick="toggleAbout(false)" style="margin-top: 25px; width: 100%;">Close</button>
+        </div>
+    </div>
+
+    <div id="google_translate_element" style="display:none"></div>
+
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        const firebaseConfig = { apiKey: "AIzaSyBk2jjTTdZxJycfhTFHBOY3VIYq_M2E8-8", authDomain: "freedownloadersite-49a17.firebaseapp.com", projectId: "freedownloadersite-49a17", storageBucket: "freedownloadersite-49a17.firebasestorage.app", messagingSenderId: "463390867655", appId: "1:463390867655:web:d03a30bbce8e7224dbbee2" };
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        window.addEventListener('DOMContentLoaded', () => { 
+            if (localStorage.getItem("isUserSaved") === "true") { document.getElementById("headerTitle").innerText = "WELCOME BACK"; } 
+            
+            // লোড হওয়ার সময় আগের ভাষা চেক করা
+            var savedLang = localStorage.getItem("currentLang") || "en";
+            updateLangTick(savedLang);
+            
+            if (savedLang !== 'en') {
+                setTimeout(function() {
+                    var select = document.querySelector('select.goog-te-combo');
+                    if(select) {
+                        select.value = savedLang;
+                        select.dispatchEvent(new Event('change'));
+                    }
+                }, 1000);
+            }
+        });
+
+        window.handleAuth = async function(type) {
+            const input = document.getElementById('userInput').value;
+            const pass = document.getElementById('passInput').value;
+            if(!input || pass.length < 6) { alert("Please enter valid info (Password 6+ chars)"); return; }
+            let finalUser = input.includes("@") ? input : input + "@phone.com";
+            if(type === 'signup') { createUserWithEmailAndPassword(auth, finalUser, pass).then(() => { localStorage.setItem("isUserSaved", "true"); window.location.href = "dashboard.html"; }).catch((err) => alert(err.message)); }
+            else { signInWithEmailAndPassword(auth, finalUser, pass).then(() => { localStorage.setItem("isUserSaved", "true"); window.location.href = "dashboard.html"; }).catch((err) => alert("Login Failed: " + err.message)); }
+        }
+    </script>
+
+    <script>
+        function toggleAbout(show) { document.getElementById("aboutModal").style.display = show ? "block" : "none"; }
+        function togglePass() { var p = document.getElementById("passInput"); p.type = (p.type === "password") ? "text" : "password"; document.querySelector(".toggle-txt").innerText = (p.type === "password") ? "Show" : "Hide"; }
+        
+        function toggleSideMenu(open) { document.getElementById("sideMenu").style.width = open ? "280px" : "0"; }
+        
+        function toggleLangList() {
+            var list = document.getElementById("langList");
+            var arrow = document.getElementById("arrow");
+            if (list.style.display === "flex") { list.style.display = "none"; arrow.innerText = "▾"; }
+            else { list.style.display = "flex"; arrow.innerText = "▴"; }
+        }
+
+        function changeLang(langCode) {
+            // মেমোরিতে ভাষা সেভ করা (অন্যান্য পেজ এই ডাটা ব্যবহার করবে)
+            localStorage.setItem("currentLang", langCode);
+            
+            updateLangTick(langCode);
+            
+            var select = document.querySelector('select.goog-te-combo');
+            if(select) {
+                select.value = langCode;
+                select.dispatchEvent(new Event('change'));
+            }
+            setTimeout(() => toggleSideMenu(false), 400);
+        }
+
+        function updateLangTick(langCode) {
+            document.querySelectorAll('.lang-option').forEach(el => el.classList.remove('active'));
+            var activeEl = document.getElementById(langCode);
+            if(activeEl) activeEl.classList.add('active');
+        }
+
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
+        }
+    </script>
+</body>
+</html>
