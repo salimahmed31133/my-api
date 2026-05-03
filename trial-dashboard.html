@@ -209,5 +209,13 @@ body {
         }
     });
 </script>
+    <script>
+    // পৃষ্ঠা লোড হওয়ার সময় চেক করবে ডার্ক মোড অন আছে কি না
+    window.addEventListener('DOMContentLoaded', () => {
+        if (localStorage.getItem("theme") === "dark") {
+            document.body.classList.add("dark-theme");
+        }
+    });
+    </script>
 </body>
 </html>
