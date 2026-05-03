@@ -255,5 +255,27 @@ body {
             new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
         }
     </script>
+    <script>
+    const switchBtn = document.getElementById("dark-mode-switch");
+    const body = document.body;
+
+    // আগে সেভ করা থিম চেক করা
+    if (localStorage.getItem("theme") === "dark") {
+        body.classList.add("dark-theme");
+        if(switchBtn) switchBtn.checked = true; 
+    }
+
+    if(switchBtn) {
+        switchBtn.addEventListener("change", () => {
+            if (switchBtn.checked) {
+                body.classList.add("dark-theme");
+                localStorage.setItem("theme", "dark");
+            } else {
+                body.classList.remove("dark-theme");
+                localStorage.setItem("theme", "light");
+            }
+        });
+    }
+    </script>
 </body>
 </html>
