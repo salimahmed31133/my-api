@@ -3,32 +3,36 @@
 <head>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-CFGFT13CS4"></script>
     <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-CFGFT13CS4');
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-CFGFT13CS4');
     </script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FreeSave.com - Access</title>
     <link rel="icon" type="image/png" href="ns-logo.png">
     <style>
         body { font-family: 'Segoe UI', sans-serif; background: #f8f9fa; margin: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; padding-bottom: 40px; transition: 0.3s; }
+        
+        /* হেডার ডিজাইন */
         header { width: 100%; height: 60px; background: #fff; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; box-sizing: border-box; border-bottom: 1px solid #eee; }
         .header-brand { font-size: 24px; font-weight: 800; color: #000; text-decoration: none; }
-        .header-brand span { color: #D4AF37; } /* Save সোনালী */
+        .header-brand span { color: #D4AF37; } /* Save অংশ সোনালী */
 
+        /* ডার্ক মোড সুইচ (চাঁদ কালো) */
         .gold-toggle { position: relative; display: inline-block; width: 50px; height: 26px; cursor: pointer; margin-right: 15px; }
         .gold-toggle input { opacity: 0; width: 0; height: 0; }
         .gold-slider { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-color: transparent; border: 2px solid #000; border-radius: 34px; transition: .4s; display: flex; align-items: center; padding: 0 5px; }
-        .moon-icon { font-size: 14px; color: #000 !important; transition: .4s; }
+        .moon-icon { font-size: 14px; color: #000 !important; transition: .4s; } /* চাঁদ বাটন কালো */
         .gold-toggle input:checked + .gold-slider { background-color: #D4AF37; border-color: #D4AF37; }
         .gold-toggle input:checked + .gold-slider .moon-icon { transform: translateX(22px); color: #fff !important; }
 
         .menu-btn { cursor: pointer; display: flex; flex-direction: column; gap: 5px; padding: 10px; }
-        .menu-btn span { width: 25px; height: 3px; background: #000; border-radius: 2px; }
+        .menu-btn span { width: 25px; height: 3px; background: #000; border-radius: 2px; } /* থ্রি লাইন কালো */
 
-        /* ডার্ক মোড */
+        /* ডার্ক থিম স্টাইল */
         body.dark-theme { background-color: #121212 !important; color: #f1f1f1 !important; }
         .dark-theme header { background-color: #1a1a1a; border-bottom: 1px solid #333; }
         .dark-theme .header-brand { color: #fff; }
@@ -36,6 +40,7 @@
         .dark-theme .auth-card, .dark-theme .trial-card { background: #1a1a1a; border-color: #333; color: #fff; }
         .dark-theme input { background: #222; border-color: #444; color: #fff; }
 
+        /* সাইড মেনু এবং ভাষা */
         .side-menu { height: 100%; width: 0; position: fixed; z-index: 2000; top: 0; right: 0; background-color: #fff; overflow-y: auto; transition: 0.4s; box-shadow: -2px 0 10px rgba(0,0,0,0.1); }
         .dark-theme .side-menu { background: #1a1a1a; color: #fff; }
         .menu-close { padding: 20px; font-size: 25px; cursor: pointer; text-align: right; display: block; }
@@ -49,23 +54,40 @@
         .tick { display: none; width: 18px; height: 18px; background: #000; color: #fff; border-radius: 50%; font-size: 11px; text-align: center; line-height: 18px; }
         .active .tick { display: block; }
 
-        /* কার্ড এবং লোগো */
-        .logo-container { margin-top: 40px; }
-        .logo-circle { width: 110px; height: 110px; background: #000; border: 3.5px solid #D4AF37; border-radius: 50%; display: flex; justify-content: center; align-items: center; overflow: hidden; }
-        .logo-circle img { width: 100%; height: 100%; object-fit: cover; }
+        .logo-container { margin-top: 40px; display: flex; justify-content: center; }
+        .logo-circle { width: 110px; height: 110px; background: #000; border: 3.5px solid #D4AF37; border-radius: 50%; display: flex; justify-content: center; align-items: center; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+        .logo-circle img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .site-link-wrapper { text-decoration: none; color: inherit; display: block; width: 90%; text-align: center; }
         .site-name-top { font-size: 28px; font-weight: 800; color: #1a1a1a; margin-top: 15px; }
         .dark-theme .site-name-top { color: #D4AF37; }
-        .auth-card { background: white; padding: 35px 25px; border-radius: 30px; box-shadow: 0 10px 40px rgba(0,0,0,0.05); width: 85%; max-width: 400px; text-align: center; border: 1px solid #ddd; margin-top: 20px; }
-        input { width: 100%; padding: 18px; margin: 12px 0 5px 0; border: 1px solid #eee; border-radius: 15px; box-sizing: border-box; }
-        .auth-btn { background: #1a1a1a; color: #fff; border: 2px solid #D4AF37; padding: 18px; flex: 1; border-radius: 15px; font-size: 16px; font-weight: 800; cursor: pointer; }
-        .trial-card { background: white; padding: 30px 20px; border-radius: 40px; width: 85%; max-width: 400px; text-align: center; border: 1px solid #eee; margin-top: 20px; }
-        .trial-btn { display: block; background: #1a1a1a; color: #fff; text-decoration: none; border: 2px solid #D4AF37; padding: 18px; border-radius: 25px; font-size: 20px; font-weight: 800; }
+        .disclaimer { font-size: 11px; color: #555; text-align: center; width: 85%; margin-top: 5px; margin-bottom: 35px; line-height: 1.5; }
+        .header-section { width: 85%; max-width: 400px; display: flex; justify-content: flex-end; margin-bottom: 10px; }
+        .header-link { color: #1a1a1a; font-size: 14px; font-weight: bold; cursor: pointer; text-decoration: none; border-bottom: 2px solid #1a1a1a; padding: 2px 0; }
+        .dark-theme .header-link { color: #fff; border-color: #D4AF37; }
+        .auth-card { background: white; padding: 35px 25px; border-radius: 30px; box-shadow: 0 10px 40px rgba(0,0,0,0.05); width: 85%; max-width: 400px; text-align: center; border: 1px solid #ddd; }
+        input { width: 100%; padding: 18px; margin: 12px 0 5px 0; border: 1px solid #eee; border-radius: 15px; box-sizing: border-box; font-size: 15px; outline: none; background: #fdfdfd; }
+        .pass-wrapper { position: relative; width: 100%; }
+        .toggle-txt { position: absolute; right: 15px; top: 28px; cursor: pointer; color: #1a1a1a; font-size: 10px; font-weight: 800; text-transform: uppercase; background: #eee; padding: 4px 7px; border-radius: 6px; user-select: none; }
+        .btn-container { display: flex; gap: 12px; margin-top: 25px; }
+        .auth-btn { background: #1a1a1a; color: #fff; border: 2px solid #D4AF37; padding: 18px; flex: 1; border-radius: 15px; font-size: 16px; font-weight: 800; cursor: pointer; transition: 0.2s; text-transform: uppercase; }
+        .ad-slot { width: 85%; max-width: 400px; height: 90px; background: #f0f0f0; border: 1px dashed #ccc; margin-top: 25px; border-radius: 15px; display: flex; align-items: center; justify-content: center; color: #888; font-size: 12px; }
+        .footer-links { margin-top: 25px; text-align: center; margin-bottom: 20px; }
+        .footer-links a { color: #999; font-size: 14px; text-decoration: none; border-bottom: 1px solid #ddd; padding-bottom: 2px; }
+        .trial-card { background: white; padding: 30px 20px; border-radius: 40px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); width: 85%; max-width: 400px; text-align: center; border: 1px solid #eee; margin-top: 10px; }
+        .trial-title { font-size: 18px; font-weight: 800; color: #1a1a1a; margin-bottom: 20px; }
+        .trial-btn { display: block; background: #1a1a1a; color: #fff; text-decoration: none; border: 2px solid #D4AF37; padding: 18px; border-radius: 25px; font-size: 20px; font-weight: 800; text-transform: uppercase; }
         .modal { display: none; position: fixed; z-index: 3000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); }
-        .modal-content { background: white; margin: 15% auto; padding: 35px 25px; border-radius: 25px; width: 85%; max-width: 380px; text-align: center; }
-        iframe.goog-te-banner-frame, #google_translate_element, .skiptranslate { display: none !important; }
+        .modal-content { background: white; margin: 15% auto; padding: 35px 25px; border-radius: 25px; width: 85%; max-width: 380px; text-align: center; position: relative; }
+
+        /* গুগল ট্রান্সলেট বন্ধের শক্তিশালী কোড */
+        iframe.goog-te-banner-frame, #google_translate_element, .skiptranslate, .goog-te-gadget, .goog-te-banner-frame { display: none !important; }
+        body { top: 0px !important; }
+        .goog-text-highlight { background-color: transparent !important; box-shadow: none !important; }
+        #goog-gt-tt, .goog-te-balloon-frame, .goog-te-menu-value img { display: none !important; }
     </style>
 </head>
 <body>
+
     <header>
         <a href="#" class="header-brand">Free<span>Save</span></a>
         <div style="display: flex; align-items: center;">
@@ -114,64 +136,124 @@
     </div>
 
     <div class="logo-container">
-        <div class="logo-circle"><img src="ns-logo.png" alt="Logo"></div>
+        <div class="logo-circle"><img src="ns-logo.png" alt="NS Logo"></div>
     </div>
-    <div class="site-name-top">FreeSave.com</div>
-    <div class="header-section" style="margin-top:10px;"><a class="header-link" onclick="toggleAbout(true)" style="cursor:pointer; font-weight:bold; text-decoration:underline;">About Us</a></div>
+    
+    <a href="https://freesave-app.github.io/" class="site-link-wrapper">
+        <div class="site-name-top">FreeSave.com</div>
+    </a>
+    
+    <div class="disclaimer">How you use it is your business and your responsibility.</div>
+    
+    <div class="header-section">
+        <a class="header-link" onclick="toggleAbout(true)">About Us</a>
+    </div>
 
     <div class="auth-card">
-        <h2 id="headerTitle">WELCOME</h2>
-        <input type="text" id="userInput" placeholder="Mobile Number or Email">
-        <input type="password" id="passInput" placeholder="Password">
-        <div class="btn-container" style="display:flex; gap:10px; margin-top:20px;">
-            <button class="auth-btn" onclick="handleAuth('signup')">SIGN UP</button>
-            <button class="auth-btn" onclick="handleAuth('login')">LOG IN</button>
+        <h2 id="headerTitle" style="font-size: 24px; font-weight: 800; margin-bottom: 25px;">WELCOME</h2>
+        <input type="text" id="userInput" placeholder="Mobile Number or Email" required>
+        <div class="pass-wrapper">
+            <input type="password" id="passInput" placeholder="Password" required>
+            <div class="toggle-txt" onclick="togglePass()">Show</div>
+        </div>
+        <div class="btn-container">
+            <button type="button" class="auth-btn" onclick="handleAuth('signup')">SIGN UP</button>
+            <button type="button" class="auth-btn" onclick="handleAuth('login')">LOG IN</button>
         </div>
     </div>
 
+    <div class="ad-slot">Advertisement Space (Google AdSense)</div>
+
+    <div class="footer-links">
+        <a href="privacy.html">Privacy Policy</a>
+    </div>
+
     <div class="trial-card">
-        <div style="font-weight:bold; margin-bottom:15px;">Get 3 Free Downloads Per Day</div>
+        <div class="trial-title">Get 3 Free Downloads Per Day</div>
         <a href="trial-dashboard.html" class="trial-btn">START FOR FREE</a>
     </div>
 
     <div id="aboutModal" class="modal">
         <div class="modal-content">
-            <h3>FreeSave.com</h3>
-            <p>Owner: Kayra Haque</p>
-            <button class="auth-btn" onclick="toggleAbout(false)">Close</button>
+            <span style="font-size: 22px; font-weight: bold; color: #1a1a1a; margin-bottom: 15px; display: block;">FreeSave.com</span>
+            <p style="text-align: left; margin-bottom: 10px;">
+                <strong>Owner:</strong> <a href="https://www.facebook.com/profile.php?id=61554658855824" target="_blank" style="color:#000; font-weight:700; text-decoration:none;">Kayra Haque</a>
+            </p>
+            <p style="text-align: left; margin-bottom: 10px;">
+                <strong>Email:</strong> <a href="mailto:sitefreedownloader@gmail.com" style="color:#000; font-weight:700; text-decoration:underline;">sitefreedownloader@gmail.com</a>
+            </p>
+            <button type="button" class="auth-btn" onclick="toggleAbout(false)" style="margin-top: 25px; width: 100%;">Close</button>
         </div>
     </div>
 
-    <div id="google_translate_element"></div>
+    <div id="google_translate_element" style="display:none"></div>
+
     <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
-    <script>
-        function toggleSideMenu(o){ document.getElementById("sideMenu").style.width = o ? "280px" : "0"; }
-        function toggleLangList(){ 
-            var l = document.getElementById("langList"), a = document.getElementById("arrow");
-            l.style.display = (l.style.display === "flex") ? "none" : "flex";
-            a.innerText = (l.style.display === "flex") ? "▴" : "▾";
-        }
-        function changeLang(c){
-            localStorage.setItem("currentLang", c);
-            updateLangTick(c);
-            var s = document.querySelector('select.goog-te-combo');
-            if(s) { s.value = c; s.dispatchEvent(new Event('change')); }
-            setTimeout(()=>toggleSideMenu(false), 400);
-        }
-        function updateLangTick(c){
-            document.querySelectorAll('.lang-option').forEach(e => e.classList.remove('active'));
-            if(document.getElementById(c)) document.getElementById(c).classList.add('active');
-        }
-        function googleTranslateElementInit(){ new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element'); }
-        function toggleAbout(s){ document.getElementById("aboutModal").style.display = s ? "block" : "none"; }
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        
+        const firebaseConfig = { apiKey: "AIzaSyBk2jjTTdZxJycfhTFHBOY3VIYq_M2E8-8", authDomain: "freedownloadersite-49a17.firebaseapp.com", projectId: "freedownloadersite-49a17", storageBucket: "freedownloadersite-49a17.firebasestorage.app", messagingSenderId: "463390867655", appId: "1:463390867655:web:d03a30bbce8e7224dbbee2" };
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
 
-        const sw = document.getElementById("dark-mode-switch");
-        if(localStorage.getItem("theme") === "dark"){ document.body.classList.add("dark-theme"); sw.checked = true; }
-        sw.addEventListener("change", ()=>{
-            if(sw.checked){ document.body.classList.add("dark-theme"); localStorage.setItem("theme", "dark"); }
-            else { document.body.classList.remove("dark-theme"); localStorage.setItem("theme", "light"); }
+        window.addEventListener('DOMContentLoaded', () => { 
+            if (localStorage.getItem("isUserSaved") === "true") { document.getElementById("headerTitle").innerText = "WELCOME BACK"; } 
+            var savedLang = localStorage.getItem("currentLang") || "en";
+            updateLangTick(savedLang);
+            if (savedLang !== 'en') {
+                setTimeout(function() {
+                    var select = document.querySelector('select.goog-te-combo');
+                    if(select) { select.value = savedLang; select.dispatchEvent(new Event('change')); }
+                }, 1000);
+            }
         });
+
+        window.handleAuth = async function(type) {
+            const input = document.getElementById('userInput').value;
+            const pass = document.getElementById('passInput').value;
+            if(!input || pass.length < 6) { alert("Please enter valid info"); return; }
+            let finalUser = input.includes("@") ? input : input + "@phone.com";
+            if(type === 'signup') { createUserWithEmailAndPassword(auth, finalUser, pass).then(() => { localStorage.setItem("isUserSaved", "true"); window.location.href = "dashboard.html"; }).catch((err) => alert(err.message)); }
+            else { signInWithEmailAndPassword(auth, finalUser, pass).then(() => { localStorage.setItem("isUserSaved", "true"); window.location.href = "dashboard.html"; }).catch((err) => alert("Login Failed: " + err.message)); }
+        }
+    </script>
+
+    <script>
+        function toggleAbout(show) { document.getElementById("aboutModal").style.display = show ? "block" : "none"; }
+        function togglePass() { var p = document.getElementById("passInput"); p.type = (p.type === "password") ? "text" : "password"; document.querySelector(".toggle-txt").innerText = (p.type === "password") ? "Show" : "Hide"; }
+        function toggleSideMenu(open) { document.getElementById("sideMenu").style.width = open ? "280px" : "0"; }
+        function toggleLangList() {
+            var list = document.getElementById("langList");
+            var arrow = document.getElementById("arrow");
+            list.style.display = (list.style.display === "flex") ? "none" : "flex";
+            arrow.innerText = (list.style.display === "flex") ? "▴" : "▾";
+        }
+        function changeLang(langCode) {
+            localStorage.setItem("currentLang", langCode);
+            updateLangTick(langCode);
+            var select = document.querySelector('select.goog-te-combo');
+            if(select) { select.value = langCode; select.dispatchEvent(new Event('change')); }
+            setTimeout(() => toggleSideMenu(false), 400);
+        }
+        function updateLangTick(langCode) {
+            document.querySelectorAll('.lang-option').forEach(el => el.classList.remove('active'));
+            var activeEl = document.getElementById(langCode);
+            if(activeEl) activeEl.classList.add('active');
+        }
+        function googleTranslateElementInit() { new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element'); }
+    </script>
+    <script>
+    const switchBtn = document.getElementById("dark-mode-switch");
+    const body = document.body;
+    if (localStorage.getItem("theme") === "dark") { body.classList.add("dark-theme"); if(switchBtn) switchBtn.checked = true; }
+    if(switchBtn) {
+        switchBtn.addEventListener("change", () => {
+            if (switchBtn.checked) { body.classList.add("dark-theme"); localStorage.setItem("theme", "dark"); }
+            else { body.classList.remove("dark-theme"); localStorage.setItem("theme", "light"); }
+        });
+    }
     </script>
 </body>
-</html>
+            </html>
