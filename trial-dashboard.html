@@ -91,6 +91,29 @@ body {
 #goog-gt-tt, .goog-te-balloon-frame, .goog-te-menu-value img {
     display: none !important;
 }
+  /* ডার্ক মোড অ্যাক্টিভ হলে এই স্টাইলগুলো কাজ করবে */
+body.dark-theme { 
+    background-color: #121212 !important; 
+    color: #f1f1f1 !important; 
+}
+
+.dark-theme header { 
+    background-color: #1a1a1a !important; 
+    border-bottom: 1px solid #333 !important; 
+}
+
+/* ড্যাশবোর্ডের কার্ড বা বক্স থাকলে সেগুলোকেও ডার্ক করার জন্য */
+.dark-theme .auth-card, .dark-theme .trial-card, .dark-theme .ad-slot {
+    background-color: #1a1a1a !important;
+    border-color: #444 !important;
+    color: #fff !important;
+}
+
+.dark-theme input {
+    background-color: #222 !important;
+    border-color: #444 !important;
+    color: #fff !important;
+}  
     </style>
 </head>
 <body>
