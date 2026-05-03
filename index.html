@@ -57,6 +57,24 @@
         .trial-btn { display: block; background: #1a1a1a; color: #fff; text-decoration: none; border: 2px solid #D4AF37; padding: 18px; border-radius: 25px; font-size: 20px; font-weight: 800; text-transform: uppercase; }
         .modal { display: none; position: fixed; z-index: 3000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); }
         .modal-content { background: white; margin: 15% auto; padding: 35px 25px; border-radius: 25px; width: 85%; max-width: 380px; text-align: center; position: relative; }
+        /* গুগল ট্রান্সলেটের উপরের বিরক্তিকর বার লুকানোর কোড */
+.goog-te-banner-frame.skiptranslate, 
+.goog-te-gadget-icon, 
+#goog-gt-tt, 
+.goog-te-balloon-frame { 
+    display: none !important; 
+}
+
+body { 
+    top: 0px !important; 
+}
+
+/* ট্রান্সলেশনের সময় টেক্সট হাইলাইট বন্ধ করতে */
+.goog-text-highlight { 
+    background-color: transparent !important; 
+    box-shadow: none !important; 
+}
+  
     </style>
 </head>
 <body>
