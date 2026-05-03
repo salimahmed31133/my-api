@@ -33,7 +33,6 @@
         <div class="video-preview-container"> 
             <video id="videoPlayer" controls playsinline> 
                 <source id="videoSource" src="" type="video/mp4"> 
-                Your browser does not support the video tag. 
             </video> 
         </div> 
         <button id="downloadBtn" onclick="handleDownload()" class="download-btn">DOWNLOAD</button> 
@@ -45,11 +44,7 @@
 
     <script type="text/javascript">
         function googleTranslateElementInit() {
-            new google.translate.TranslateElement({
-                pageLanguage: 'en',
-                layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-                autoDisplay: false
-            }, 'google_translate_element');
+            new google.translate.TranslateElement({pageLanguage: 'en', autoDisplay: false}, 'google_translate_element');
         }
     </script>
     <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
@@ -58,18 +53,15 @@
         const finalLink = localStorage.getItem("downloadableUrl"); 
         
         window.onload = function() { 
-            // ভিডিও লোড করা
             if (finalLink && finalLink !== "undefined") { 
                 const player = document.getElementById("videoPlayer"); 
                 const source = document.getElementById("videoSource"); 
                 source.src = finalLink; 
                 player.load(); 
             } else { 
-                alert("Session expired. Please paste the link again."); 
                 window.location.href = "dashboard.html"; 
             }
 
-            // ভাষা অটোমেটিক সেট করা
             var savedLang = localStorage.getItem("currentLang"); 
             if (savedLang && savedLang !== 'en') {
                 var checkGoogleInterval = setInterval(function() {
@@ -83,31 +75,46 @@
             }
         }; 
 
-        function handleDownload() { 
+        async function handleDownload() { 
             const btn = document.getElementById("downloadBtn"); 
             const originalText = btn.innerText; 
-            btn.innerText = "STARTING..."; 
             
-            // এক ক্লিকে ডাউনলোডের জন্য মেকানিজম
+            btn.innerText = "DOWNLOADING..."; 
+            btn.disabled = true;
+
             try {
+                // ভিডিও ফাইলটি ব্রাউজারের ব্যাকগ্রাউন্ডে ফেচ করা হচ্ছে
+                const response = await fetch(finalLink);
+                if (!response.ok) throw new Error();
+                
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+                
                 const a = document.createElement('a');
-                a.href = finalLink;
-                // অনেক সময় এই অ্যাট্রিবিউট সরাসরি কাজ করে না, তাই নিউ ট্যাব ব্যাকআপ রাখা হয়েছে
-                a.setAttribute('download', 'FreeSave_Video_' + Date.now() + '.mp4');
-                a.target = '_blank'; 
+                a.href = url;
+                a.download = "FreeSave_Video_" + Date.now() + ".mp4";
                 document.body.appendChild(a);
                 a.click();
                 document.body.removeChild(a);
-
+                window.URL.revokeObjectURL(url);
+                
+                btn.innerText = "DONE!";
                 setTimeout(() => {
-                    btn.innerText = "DONE!";
-                    setTimeout(() => {
-                        btn.innerText = originalText;
-                    }, 2000);
-                }, 1000);
+                    btn.innerText = originalText;
+                    btn.disabled = false;
+                }, 3000);
             } catch (err) {
-                window.open(finalLink, '_blank');
+                // যদি ব্যাকগ্রাউন্ডে ডাউনলোড না হয় (CORS Error), তবে সাধারণ পদ্ধতিতে যাবে
+                const a = document.createElement('a');
+                a.href = finalLink;
+                a.setAttribute('download', 'video.mp4');
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                
                 btn.innerText = originalText;
+                btn.disabled = false;
+                alert("যদি ভিডিও ডাউনলোড শুরু না হয়, তবে ভিডিওর ⋮ (3 dots) থেকে ডাউনলোড করুন।");
             }
         } 
     </script> 
