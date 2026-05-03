@@ -71,5 +71,35 @@
 
         <a href="index.html" class="back-btn">Back to Home</a>
     </div>
+    <div id="google_translate_element" style="display:none;"></div>
+
+<script type="text/javascript">
+    function googleTranslateElementInit() {
+        new google.translate.TranslateElement({
+            pageLanguage: 'en',
+            layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+            autoDisplay: false
+        }, 'google_translate_element');
+    }
+</script>
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+<script>
+    window.addEventListener('load', function() {
+        // ইনডেক্স পেজ থেকে সেভ করা ভাষা খুঁজে বের করা
+        var savedLang = localStorage.getItem("currentLang"); 
+        
+        if (savedLang && savedLang !== 'en') {
+            var checkGoogleInterval = setInterval(function() {
+                var selectField = document.querySelector("select.goog-te-combo");
+                if (selectField) {
+                    selectField.value = savedLang;
+                    selectField.dispatchEvent(new Event('change'));
+                    clearInterval(checkGoogleInterval);
+                }
+            }, 500); 
+        }
+    });
+</script>
 </body>
 </html>
