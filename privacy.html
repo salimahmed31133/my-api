@@ -42,22 +42,30 @@
             letter-spacing: 0.5px;
         }
         .back-btn:active { transform: scale(0.97); }
-        /* গুগল ট্রান্সলেটের উপরের বিরক্তিকর বার লুকানোর কোড */
-.goog-te-banner-frame.skiptranslate, 
-.goog-te-gadget-icon, 
-#goog-gt-tt, 
-.goog-te-balloon-frame { 
-    display: none !important; 
+/* গুগল ট্রান্সলেটের উপরের বার চিরতরে বন্ধ করার শক্তিশালী কোড */
+iframe.goog-te-banner-frame {
+    display: none !important;
 }
 
-body { 
-    top: 0px !important; 
+body {
+    top: 0px !important;
 }
 
-/* ট্রান্সলেশনের সময় টেক্সট হাইলাইট বন্ধ করতে */
-.goog-text-highlight { 
-    background-color: transparent !important; 
-    box-shadow: none !important; 
+#google_translate_element, 
+.skiptranslate, 
+.goog-te-gadget, 
+.goog-te-banner-frame {
+    display: none !important;
+}
+
+/* ট্রান্সলেশনের সময় টেক্সট হাইলাইট বা পপআপ বন্ধ করতে */
+.goog-text-highlight {
+    background-color: transparent !important;
+    box-shadow: none !important;
+}
+
+#goog-gt-tt, .goog-te-balloon-frame, .goog-te-menu-value img {
+    display: none !important;
 }
     </style>
 </head>
