@@ -9,7 +9,7 @@
         .auth-card { background: white; padding: 30px; border-radius: 30px; box-shadow: 0 10px 40px rgba(0,0,0,0.1); width: 90%; max-width: 450px; text-align: center; margin-top: 50px; border: 1px solid #eee; }
         .video-preview-container { width: 100%; border-radius: 20px; background: #000; margin-bottom: 20px; overflow: hidden; }
         video { width: 100%; display: block; max-height: 400px; }
-        .download-btn { background: #1a1a1a; color: white; border: 2.5px solid #D4AF37; padding: 18px; width: 100%; border-radius: 15px; font-size: 20px; font-weight: 800; cursor: pointer; text-transform: uppercase; transition: 0.3s; display: block; text-decoration: none; }
+        .download-btn { background: #1a1a1a; color: white; border: 2.5px solid #D4AF37; padding: 18px; width: 100%; border-radius: 15px; font-size: 20px; font-weight: 800; cursor: pointer; text-transform: uppercase; transition: 0.3s; display: block; text-decoration: none; border: none; }
         .download-btn:active { transform: scale(0.98); }
         .new-download { margin-top: 20px; display: inline-block; color: #1a1a1a; text-decoration: none; font-weight: bold; border-bottom: 2px solid #1a1a1a; }
         body.dark-theme { background-color: #121212; color: #f1f1f1; }
@@ -25,9 +25,7 @@
             </video>
         </div>
         
-        <a id="downloadLink" href="" download="FreeSave_Video.mp4" type="video/mp4">
-            <button class="download-btn" onclick="showStarting()">DOWNLOAD NOW</button>
-        </a>
+        <button id="mainDownloadBtn" class="download-btn" onclick="startDownload()">DOWNLOAD NOW</button>
         
         <br>
         <a href="dashboard.html" class="new-download">Download Another Video</a>
@@ -40,23 +38,47 @@
             if (videoUrl && videoUrl !== "undefined") {
                 const player = document.getElementById("videoPlayer");
                 const source = document.getElementById("videoSource");
-                const anchor = document.getElementById("downloadLink");
-                
-                // ১. ভিডিও প্রিভিউ লোড করা
                 source.src = videoUrl;
                 player.load();
-                
-                // ২. ডাউনলোড বাটনের লিংক সেট করা
-                // এখানে আমরা ব্রাউজারকে ডিরেক্ট সোর্স দিচ্ছি যেন সে ডাউনলোড ট্রিগার করতে পারে
-                anchor.href = videoUrl;
             } else {
                 window.location.href = "dashboard.html";
             }
         };
 
-        function showStarting() {
-            const btn = document.querySelector(".download-btn");
+        async function startDownload() {
+            const btn = document.getElementById("mainDownloadBtn");
             btn.innerText = "STARTING...";
+            
+            try {
+                // ভিডিওর ডেটা ফেচ করা
+                const response = await fetch(videoUrl);
+                const blob = await response.blob();
+                
+                // মেমোরিতে একটি টেম্পোরারি লিংক তৈরি করা
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = url;
+                // এই লাইনটি ব্রাউজারকে প্লে করতে বাধা দেয় এবং ডাউনলোড নোটিফিকেশন পাঠায়
+                a.download = "FreeSave_" + Date.now() + ".mp4";
+                
+                document.body.appendChild(a);
+                a.click();
+                
+                // কাজ শেষে মেমোরি ক্লিয়ার করা
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+                
+                btn.innerText = "DONE!";
+            } catch (error) {
+                // যদি মেমোরি মেথড কাজ না করে (CORS), তবে সাধারণ পদ্ধতিতে পাঠাবে
+                const a = document.createElement('a');
+                a.href = videoUrl;
+                a.setAttribute('download', 'video.mp4');
+                a.click();
+                btn.innerText = "DOWNLOAD NOW";
+            }
+            
             setTimeout(() => {
                 btn.innerText = "DOWNLOAD NOW";
             }, 3000);
