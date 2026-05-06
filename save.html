@@ -21,15 +21,10 @@
         video { width: 100%; display: block; max-height: 400px; background: #000; }
         .download-btn { background: #1a1a1a !important; color: white !important; border: 2.5px solid #D4AF37 !important; padding: 20px; width: 100%; border-radius: 18px; font-size: 22px; font-weight: 800; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 8px 20px rgba(0,0,0,0.2); transition: 0.3s; margin-top: 10px; outline: none; }
         .download-btn:active { transform: scale(0.97); }
-        .download-btn:disabled { background: #555 !important; border-color: #777 !important; cursor: not-allowed; }
         .new-download { margin-top: 25px; display: inline-block; color: #1a1a1a !important; text-decoration: none; font-size: 16px; font-weight: 800; border-bottom: 2px solid #1a1a1a; padding-bottom: 2px; }
-        iframe.goog-te-banner-frame { display: none !important; }
-        body { top: 0px !important; }
-        #google_translate_element, .skiptranslate, .goog-te-gadget, .goog-te-banner-frame { display: none !important; }
-        .goog-text-highlight { background-color: transparent !important; box-shadow: none !important; }
-        #goog-gt-tt, .goog-te-balloon-frame, .goog-te-menu-value img { display: none !important; }
+        
+        /* ডার্ক মোড */
         body.dark-theme { background-color: #121212 !important; color: #f1f1f1 !important; }
-        .dark-theme header { background-color: #1a1a1a !important; border-bottom: 1px solid #333 !important; }
         .dark-theme .auth-card { background-color: #1a1a1a !important; border-color: #444 !important; color: #fff !important; }
     </style>
 </head>
@@ -43,16 +38,10 @@
                 <source id="videoSource" src="" type="video/mp4">
             </video>
         </div>
-        <button id="downloadBtn" onclick="handleDownload()" class="download-btn">DOWNLOAD</button>
+        <button id="downloadBtn" onclick="forceDownload()" class="download-btn">DOWNLOAD</button>
         <br>
         <a href="dashboard.html" class="new-download">Download Another Video</a>
     </div>
-
-    <div id="google_translate_element" style="display:none;"></div>
-    <script type="text/javascript">
-        function googleTranslateElementInit() { new google.translate.TranslateElement({pageLanguage: 'en', autoDisplay: false}, 'google_translate_element'); }
-    </script>
-    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
     <script>
         const finalLink = localStorage.getItem("downloadableUrl");
@@ -66,64 +55,32 @@
             } else {
                 window.location.href = "dashboard.html";
             }
-
-            var savedLang = localStorage.getItem("currentLang");
-            if (savedLang && savedLang !== 'en') {
-                var checkGoogleInterval = setInterval(function() {
-                    var selectField = document.querySelector("select.goog-te-combo");
-                    if (selectField) {
-                        selectField.value = savedLang;
-                        selectField.dispatchEvent(new Event('change'));
-                        clearInterval(checkGoogleInterval);
-                    }
-                }, 500);
-            }
         };
 
-        async function handleDownload() {
+        function forceDownload() {
             const btn = document.getElementById("downloadBtn");
-            const originalText = btn.innerText;
-            btn.innerText = "DOWNLOADING...";
-            btn.disabled = true;
+            btn.innerText = "STARTING...";
+            
+            // SnapSave স্টাইল ডিরেক্ট ডাউনলোড মেথড
+            const link = document.createElement('a');
+            link.href = finalLink;
+            
+            // ব্রাউজারকে ভিডিও প্লে না করে সেভ করার সিগন্যাল দেয়া
+            link.setAttribute('download', 'FreeSave_Video.mp4');
+            link.setAttribute('target', '_blank'); 
+            
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
 
-            try {
-                // ফাইলটি ব্যাকগ্রাউন্ডে ফেচ করা হচ্ছে যেন ব্রাউজার সরাসরি ওপেন না করতে পারে
-                const response = await fetch(finalLink);
-                const blob = await response.blob();
-                const blobUrl = window.URL.createObjectURL(blob);
-                
-                const link = document.createElement('a');
-                link.href = blobUrl;
-                link.download = "FreeSave_Video_" + Date.now() + ".mp4";
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-                
-                // মেমোরি ক্লিয়ার করা
-                window.URL.revokeObjectURL(blobUrl);
-
-                btn.innerText = "DONE!";
-                setTimeout(() => {
-                    btn.innerText = originalText;
-                    btn.disabled = false;
-                }, 3000);
-            } catch (err) {
-                // যদি CORS সমস্যা হয়, তবে সাধারণ লিংকে পাঠানো হবে
-                const link = document.createElement('a');
-                link.href = finalLink;
-                link.setAttribute('download', ''); // ফোর্স ডাউনলোড
-                link.click();
-                
-                btn.innerText = originalText;
-                btn.disabled = false;
-            }
+            setTimeout(() => {
+                btn.innerText = "DOWNLOAD";
+            }, 2000);
         }
 
-        window.addEventListener('DOMContentLoaded', () => {
-            if (localStorage.getItem("theme") === "dark") {
-                document.body.classList.add("dark-theme");
-            }
-        });
+        if (localStorage.getItem("theme") === "dark") {
+            document.body.classList.add("dark-theme");
+        }
     </script>
 </body>
 </html>
