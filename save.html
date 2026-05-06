@@ -92,6 +92,8 @@
             outline: none;
             display: block;
             text-decoration: none;
+            text-align: center;
+            box-sizing: border-box;
         }
         .download-btn:active {
             transform: scale(0.97);
@@ -149,7 +151,6 @@
 
     <script>
         const finalLink = localStorage.getItem("downloadableUrl");
-        // তোমার রেন্ডার এপিআই লিঙ্ক
         const apiBaseUrl = "https://my-downloader-api-ascp.onrender.com";
 
         window.onload = function() {
@@ -158,14 +159,11 @@
                 const source = document.getElementById("videoSource");
                 const btn = document.getElementById("downloadBtn");
 
-                // ভিডিও প্রিভিউ লোড করার জন্য
                 source.src = finalLink;
                 player.load();
 
-                // ডাউনলোড বাটনে তোমার নতুন এপিআই এর লিঙ্ক সেট করা হলো
                 btn.href = apiBaseUrl + "/force_download?url=" + encodeURIComponent(finalLink);
                 
-                // বাটনে ক্লিক করলে টেক্সট পরিবর্তন করার জন্য
                 btn.onclick = function() {
                     btn.innerText = "STARTING...";
                     setTimeout(() => { btn.innerText = "DOWNLOAD"; }, 5000);
@@ -175,7 +173,6 @@
                 window.location.href = "dashboard.html";
             }
 
-            // ল্যাঙ্গুয়েজ সেটিংস
             var savedLang = localStorage.getItem("currentLang");
             if (savedLang && savedLang !== 'en') {
                 var checkGoogleInterval = setInterval(function() {
@@ -191,7 +188,6 @@
     </script>
 
     <script>
-        // ডার্ক মোড চেক
         window.addEventListener('DOMContentLoaded', () => {
             if (localStorage.getItem("theme") === "dark") {
                 document.body.classList.add("dark-theme");
