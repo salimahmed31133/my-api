@@ -50,6 +50,7 @@
             if (finalLink && finalLink !== "undefined") {
                 const player = document.getElementById("videoPlayer");
                 const source = document.getElementById("videoSource");
+                // প্রিভিউ দেখানোর জন্য সোর্স সেট করা
                 source.src = finalLink;
                 player.load();
             } else {
@@ -57,25 +58,32 @@
             }
         };
 
-        function forceDownload() {
+        // এই ফাংশনটিই আসল কাজ করবে
+        async function forceDownload() {
             const btn = document.getElementById("downloadBtn");
             btn.innerText = "STARTING...";
             
-            // SnapSave স্টাইল ডিরেক্ট ডাউনলোড মেথড
-            const link = document.createElement('a');
-            link.href = finalLink;
-            
-            // ব্রাউজারকে ভিডিও প্লে না করে সেভ করার সিগন্যাল দেয়া
-            link.setAttribute('download', 'FreeSave_Video.mp4');
-            link.setAttribute('target', '_blank'); 
-            
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-
-            setTimeout(() => {
+            try {
+                // ভিডিওটিকে সরাসরি ডাউনলোড করানোর জন্য fetch মেথড ব্যবহার করা
+                const response = await fetch(finalLink);
+                const file = await response.blob();
+                const link = document.createElement("a");
+                link.href = URL.createObjectURL(file);
+                link.download = "FreeSave_Video_" + Date.now() + ".mp4";
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                
+                btn.innerText = "DONE!";
+                setTimeout(() => { btn.innerText = "DOWNLOAD"; }, 2000);
+            } catch (error) {
+                // যদি মেমোরিতে লোড হতে সমস্যা হয়, তবে বিকল্প উপায়ে ব্রাউজারকে পাঠানো
+                const link = document.createElement("a");
+                link.href = finalLink + "?dl=1"; // কিছু সার্ভারে এটি ডাউনলোড ট্রিগার করে
+                link.setAttribute('download', 'video.mp4');
+                link.click();
                 btn.innerText = "DOWNLOAD";
-            }, 2000);
+            }
         }
 
         if (localStorage.getItem("theme") === "dark") {
