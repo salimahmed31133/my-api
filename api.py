@@ -3,6 +3,8 @@ from flask_cors import CORS
 import yt_dlp
 import os
 
+import requests
+
 app = Flask(__name__)
 # CORS সেটিংস যাতে অন্য যেকোনো ওয়েবসাইট থেকে তোর এপিআই কল করা যায়
 CORS(app)
