@@ -22,6 +22,7 @@
         .download-btn { background: #1a1a1a !important; color: white !important; border: 2.5px solid #D4AF37 !important; padding: 20px; width: 100%; border-radius: 18px; font-size: 22px; font-weight: 800; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 8px 20px rgba(0,0,0,0.2); transition: 0.3s; margin-top: 10px; outline: none; }
         .download-btn:active { transform: scale(0.97); }
         .new-download { margin-top: 25px; display: inline-block; color: #1a1a1a !important; text-decoration: none; font-size: 16px; font-weight: 800; border-bottom: 2px solid #1a1a1a; padding-bottom: 2px; }
+        
         body.dark-theme { background-color: #121212 !important; color: #f1f1f1 !important; }
         .dark-theme .auth-card { background-color: #1a1a1a !important; border-color: #444 !important; color: #fff !important; }
     </style>
@@ -32,11 +33,11 @@
     <div class="auth-card">
         <span class="success-text">✓ Video Ready to Download</span>
         <div class="video-preview-container">
-            <video id="videoPlayer" controls playsinline>
+            <video id="videoPlayer" controls playsinline preload="auto">
                 <source id="videoSource" src="" type="video/mp4">
             </video>
         </div>
-        <button id="downloadBtn" onclick="startDownload()" class="download-btn">DOWNLOAD</button>
+        <button id="downloadBtn" onclick="handleDownload()" class="download-btn">DOWNLOAD</button>
         <br>
         <a href="dashboard.html" class="new-download">Download Another Video</a>
     </div>
@@ -55,37 +56,32 @@
             }
         };
 
-        // এই ফাংশনটিই সরাসরি ব্রাউজার নোটিফিকেশন নিয়ে আসবে
-        async function startDownload() {
+        // এই টেকনিকটি ব্রাউজারকে ভিডিও প্লে করতে বাধা দেয়
+        async function handleDownload() {
             const btn = document.getElementById("downloadBtn");
-            const originalText = btn.innerText;
-            btn.innerText = "STARTING...";
-            btn.disabled = true;
-
+            btn.innerText = "DOWNLOADING...";
+            
             try {
-                const response = await fetch(finalLink);
-                const blob = await response.blob();
-                const url = window.URL.createObjectURL(blob);
+                // আমরা সরাসরি ব্রাউজারকে ফাইল হ্যান্ডলিং করতে বলছি
+                const link = document.createElement('a');
+                link.href = finalLink;
+                // 'download' এট্রিবিউট ভিডিও প্লে না করে সেভ করতে সাহায্য করে
+                link.setAttribute('download', 'FreeSave_Video_' + Date.now() + '.mp4');
+                link.style.display = 'none';
                 
-                const a = document.createElement('a');
-                a.style.display = 'none';
-                a.href = url;
-                a.download = "FreeSave_Video_" + Date.now() + ".mp4";
-                document.body.appendChild(a);
-                a.click();
+                // কিছু ব্রাউজারের জন্য সরাসরি ক্লিক ট্রিগার করা
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
                 
-                window.URL.revokeObjectURL(url);
-                document.body.removeChild(a);
-                
-                btn.innerText = "DONE!";
-            } catch (error) {
-                // যদি ব্যাকগ্রাউন্ডে সমস্যা হয়, তবেই কেবল সরাসরি লিঙ্কে পাঠাবে
-                window.location.assign(finalLink);
-            } finally {
+                // ১ সেকেন্ড পর বাটন আগের অবস্থায় ফিরিয়ে আনা
                 setTimeout(() => {
-                    btn.innerText = originalText;
-                    btn.disabled = false;
-                }, 3000);
+                    btn.innerText = "DOWNLOAD";
+                }, 2000);
+            } catch (err) {
+                // ফেইলসেফ হিসেবে সরাসরি লিঙ্ক ওপেন করা
+                window.open(finalLink, '_blank');
+                btn.innerText = "DOWNLOAD";
             }
         }
 
