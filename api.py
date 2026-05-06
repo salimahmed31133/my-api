@@ -56,29 +56,35 @@ def download():
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
 
-
 @app.route('/force_download')
 def force_download():
     video_url = request.args.get('url')
     if not video_url:
-        return "URL missing", 400
-    
+        return "No URL provided", 400
+
     try:
-        # ভিডিও সোর্স থেকে ডাটা নিয়ে আসা
-        r = requests.get(video_url, stream=True, headers={'User-Agent': 'Mozilla/5.0'})
+        # ভিডিওর ডেটা স্ট্রিম হিসেবে নেওয়া
+        req = requests.get(video_url, stream=True, timeout=30)
         
-        # এই হেডারগুলোই ব্রাউজারকে ডাউনলোড নোটিফিকেশন পাঠাতে বাধ্য করে
-        headers = {
-            'Content-Disposition': 'attachment; filename=FreeSave_Video.mp4',
-            'Content-Type': 'video/mp4',
-            'Access-Control-Allow-Origin': '*'
-        }
-        
+        # ভিডিওর মোট সাইজ বের করা (এটিই প্রোগ্রেস বার দেখাবে)
+        total_size = req.headers.get('content-length')
+
         def generate():
-            for chunk in r.iter_content(chunk_size=1024 * 1024):
+            for chunk in req.iter_content(chunk_size=8192):
                 yield chunk
 
+        # রেসপন্স হেডার তৈরি করা
+        headers = {
+            'Content-Disposition': 'attachment; filename="FreeSave_Video.mp4"',
+            'Content-Type': 'video/mp4',
+        }
+        
+        # যদি সাইজ পাওয়া যায়, তবে তা ব্রাউজারকে জানিয়ে দেওয়া
+        if total_size:
+            headers['Content-Length'] = total_size
+
         return Response(generate(), headers=headers)
+        
     except Exception as e:
         return str(e), 500
 
