@@ -54,6 +54,32 @@ def download():
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
 
+
+@app.route('/force_download')
+def force_download():
+    video_url = request.args.get('url')
+    if not video_url:
+        return "URL missing", 400
+    
+    try:
+        # ভিডিও সোর্স থেকে ডাটা নিয়ে আসা
+        r = requests.get(video_url, stream=True, headers={'User-Agent': 'Mozilla/5.0'})
+        
+        # এই হেডারগুলোই ব্রাউজারকে ডাউনলোড নোটিফিকেশন পাঠাতে বাধ্য করে
+        headers = {
+            'Content-Disposition': 'attachment; filename=FreeSave_Video.mp4',
+            'Content-Type': 'video/mp4',
+            'Access-Control-Allow-Origin': '*'
+        }
+        
+        def generate():
+            for chunk in r.iter_content(chunk_size=1024 * 1024):
+                yield chunk
+
+        return Response(generate(), headers=headers)
+    except Exception as e:
+        return str(e), 500
+
 if __name__ == '__main__':
     # Render-এর পোর্টের সাথে অটোমেটিক কানেক্ট হওয়ার জন্য এই অংশটি মাস্ট
     port = int(os.environ.get('PORT', 10000))
