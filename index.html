@@ -18,23 +18,20 @@
     <style>
         body { font-family: 'Segoe UI', sans-serif; background: #f8f9fa; margin: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; padding-bottom: 40px; transition: 0.3s; }
         
-        /* হেডার ডিজাইন */
         header { width: 100%; height: 60px; background: #fff; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; box-sizing: border-box; border-bottom: 1px solid #eee; }
         .header-brand { font-size: 24px; font-weight: 800; color: #000; text-decoration: none; }
-        .header-brand span { color: #D4AF37; } /* Save অংশ সোনালী */
+        .header-brand span { color: #D4AF37; }
 
-        /* ডার্ক মোড সুইচ (চাঁদ কালো) */
         .gold-toggle { position: relative; display: inline-block; width: 50px; height: 26px; cursor: pointer; margin-right: 15px; }
         .gold-toggle input { opacity: 0; width: 0; height: 0; }
         .gold-slider { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-color: transparent; border: 2px solid #000; border-radius: 34px; transition: .4s; display: flex; align-items: center; padding: 0 5px; }
-        .moon-icon { font-size: 14px; color: #000 !important; transition: .4s; } /* চাঁদ বাটন কালো */
+        .moon-icon { font-size: 14px; color: #000 !important; transition: .4s; }
         .gold-toggle input:checked + .gold-slider { background-color: #D4AF37; border-color: #D4AF37; }
         .gold-toggle input:checked + .gold-slider .moon-icon { transform: translateX(22px); color: #fff !important; }
 
         .menu-btn { cursor: pointer; display: flex; flex-direction: column; gap: 5px; padding: 10px; }
-        .menu-btn span { width: 25px; height: 3px; background: #000; border-radius: 2px; } /* থ্রি লাইন কালো */
+        .menu-btn span { width: 25px; height: 3px; background: #000; border-radius: 2px; }
 
-        /* ডার্ক থিম স্টাইল */
         body.dark-theme { background-color: #121212 !important; color: #f1f1f1 !important; }
         .dark-theme header { background-color: #1a1a1a; border-bottom: 1px solid #333; }
         .dark-theme .header-brand { color: #fff; }
@@ -42,13 +39,18 @@
         .dark-theme .auth-card, .dark-theme .trial-card { background: #1a1a1a; border-color: #333; color: #fff; }
         .dark-theme input { background: #222; border-color: #444; color: #fff; }
 
-        /* সাইড মেনু এবং ভাষা */
         .side-menu { height: 100%; width: 0; position: fixed; z-index: 2000; top: 0; right: 0; background-color: #fff; overflow-y: auto; transition: 0.4s; box-shadow: -2px 0 10px rgba(0,0,0,0.1); }
         .dark-theme .side-menu { background: #1a1a1a; color: #fff; }
         .menu-close { padding: 20px; font-size: 25px; cursor: pointer; text-align: right; display: block; }
         .menu-item { padding: 15px 25px; font-size: 18px; font-weight: bold; border-bottom: 1px solid #eee; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+        
         .lang-container { display: none; background: #fdfdfd; flex-direction: column; }
         .dark-theme .lang-container { background: #222; }
+
+        .how-to-content { display: none; padding: 15px 25px; background: #fdfdfd; border-bottom: 1px solid #eee; font-size: 14px; line-height: 1.6; color: #333; text-align: left; }
+        .dark-theme .how-to-content { background: #222; color: #ccc; border-bottom-color: #333; }
+        .how-to-content strong { color: #D4AF37; }
+
         .lang-option { padding: 12px 30px; text-decoration: none; color: #333; border-bottom: 1px solid #f1f1f1; font-size: 15px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
         .dark-theme .lang-option { color: #ccc; border-bottom-color: #333; }
         .lang-option.active { font-weight: bold; color: #000; }
@@ -60,8 +62,10 @@
         .logo-circle { width: 110px; height: 110px; background: #000; border: 3.5px solid #D4AF37; border-radius: 50%; display: flex; justify-content: center; align-items: center; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
         .logo-circle img { width: 100%; height: 100%; object-fit: cover; display: block; }
         .site-link-wrapper { text-decoration: none; color: inherit; display: block; width: 90%; text-align: center; }
-        .site-name-top { font-size: 28px; font-weight: 800; color: #1a1a1a; margin-top: 15px; }
+        
+        .site-name-top { font-size: 28px; font-weight: 800; color: #1a1a1a; margin-top: 15px; padding-left: 5px; }
         .dark-theme .site-name-top { color: #D4AF37; }
+        
         .disclaimer { font-size: 11px; color: #555; text-align: center; width: 85%; margin-top: 5px; margin-bottom: 35px; line-height: 1.5; }
         .header-section { width: 85%; max-width: 400px; display: flex; justify-content: flex-end; margin-bottom: 10px; }
         .header-link { color: #1a1a1a; font-size: 14px; font-weight: bold; cursor: pointer; text-decoration: none; border-bottom: 2px solid #1a1a1a; padding: 2px 0; }
@@ -81,11 +85,27 @@
         .modal { display: none; position: fixed; z-index: 3000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); }
         .modal-content { background: white; margin: 15% auto; padding: 35px 25px; border-radius: 25px; width: 85%; max-width: 380px; text-align: center; position: relative; }
 
-        /* গুগল ট্রান্সলেট বন্ধের শক্তিশালী কোড */
         iframe.goog-te-banner-frame, #google_translate_element, .skiptranslate, .goog-te-gadget, .goog-te-banner-frame { display: none !important; }
         body { top: 0px !important; }
         .goog-text-highlight { background-color: transparent !important; box-shadow: none !important; }
         #goog-gt-tt, .goog-te-balloon-frame, .goog-te-menu-value img { display: none !important; }
+        
+        .dark-theme .modal-content {
+            background: #1a1a1a;
+            color: #fff;
+            border: 1px solid #333;
+        }
+
+        .dark-theme .modal-content span, 
+        .dark-theme .modal-content p, 
+        .dark-theme .modal-content li,
+        .dark-theme .modal-content strong {
+            color: #fff !important;
+        }
+
+        .dark-theme .modal-content a {
+            color: #D4AF37 !important;
+        }
     </style>
 </head>
 <body>
@@ -105,7 +125,8 @@
 
     <div id="sideMenu" class="side-menu">
         <span class="menu-close" onclick="toggleSideMenu(false)">&times;</span>
-        <div class="menu-item" onclick="toggleLangList()">Language <span id="arrow">▾</span></div>
+        
+        <div class="menu-item" onclick="toggleLangList()">Language <span id="arrowLang">▾</span></div>
         <div id="langList" class="lang-container">
             <div class="lang-option" id="en" onclick="changeLang('en')">English <div class="tick">✓</div></div>
             <div class="lang-option" id="bn" onclick="changeLang('bn')">বাংলা <div class="tick">✓</div></div>
@@ -135,6 +156,40 @@
             <div class="lang-option" id="sv" onclick="changeLang('sv')">Svenska <div class="tick">✓</div></div>
             <div class="lang-option" id="fi" onclick="changeLang('fi')">Suomi <div class="tick">✓</div></div>
         </div>
+
+        <div class="menu-item" onclick="toggleHowTo()">How to Use <span id="arrowHow">▾</span></div>
+        <div id="howToContent" class="how-to-content">
+            <strong>How to Use FreeSave:</strong><br>
+            1. Copy the video link from any app.<br>
+            2. Paste the link into the dashboard.<br>
+            3. Select quality and click the "Process Video" button.<br>
+            4. Once the preview appears, click the Download button.
+        </div>
+
+        <div class="menu-item" onclick="toggleFAQ(1)">Is FreeSave really free to use? <span id="arrowF1">▾</span></div>
+        <div id="faq1" class="how-to-content">
+            Yes! FreeSave is a completely free tool. You can download your favorite videos without any hidden costs.
+        </div>
+
+        <div class="menu-item" onclick="toggleFAQ(2)">Do I need an account to download videos? <span id="arrowF2">▾</span></div>
+        <div id="faq2" class="how-to-content">
+            No, you can use our basic features without an account. However, creating an account helps you manage your downloads and access premium features.
+        </div>
+
+        <div class="menu-item" onclick="toggleFAQ(3)">Which platforms are supported by FreeSave? <span id="arrowF3">▾</span></div>
+        <div id="faq3" class="how-to-content">
+            FreeSave supports almost all major social media platforms. Just paste the link, and we will handle the rest!
+        </div>
+
+        <div class="menu-item" onclick="toggleFAQ(4)">Is it safe to use FreeSave? <span id="arrowF4">▾</span></div>
+        <div id="faq4" class="how-to-content">
+            Absolutely. We do not store your personal files, and our site is designed to be secure for all users worldwide.
+        </div>
+
+        <div class="menu-item" onclick="toggleFAQ(5)">Can I download videos in High Quality (HD)? <span id="arrowF5">▾</span></div>
+        <div id="faq5" class="how-to-content">
+            Yes, FreeSave allows you to choose the available quality of the video before downloading.
+        </div>
     </div>
 
     <div class="logo-container">
@@ -142,7 +197,7 @@
     </div>
     
     <a href="https://freesave-app.github.io/" class="site-link-wrapper">
-        <div class="site-name-top">FreeSave.com</div>
+        <div class="site-name-top">FreeSave</div>
     </a>
     
     <div class="disclaimer">How you use it is your business and your responsibility.</div>
@@ -153,14 +208,22 @@
 
     <div class="auth-card">
         <h2 id="headerTitle" style="font-size: 24px; font-weight: 800; margin-bottom: 25px;">WELCOME</h2>
-        <input type="text" id="userInput" placeholder="Mobile Number or Email" required>
-        <div class="pass-wrapper">
-            <input type="password" id="passInput" placeholder="Password" required>
-            <div class="toggle-txt" onclick="togglePass()">Show</div>
+        
+        <div id="authFields">
+            <input type="text" id="userInput" placeholder="Mobile Number or Email" required>
+            <div class="pass-wrapper">
+                <input type="password" id="passInput" placeholder="Password" required>
+                <div class="toggle-txt" onclick="togglePass()">Show</div>
+            </div>
+            <div class="btn-container">
+                <button type="button" class="auth-btn" onclick="handleAuth('signup')">SIGN UP</button>
+                <button type="button" class="auth-btn" onclick="handleAuth('login')">LOG IN</button>
+            </div>
         </div>
-        <div class="btn-container">
-            <button type="button" class="auth-btn" onclick="handleAuth('signup')">SIGN UP</button>
-            <button type="button" class="auth-btn" onclick="handleAuth('login')">LOG IN</button>
+
+        <div id="startBtnContainer" style="display:none;">
+            <p style="margin-bottom: 20px; color: #555;">Get started with your downloads.</p>
+            <a href="dashboard.html" class="auth-btn" style="text-decoration: none; display: block;">START</a>
         </div>
     </div>
 
@@ -177,13 +240,20 @@
 
     <div id="aboutModal" class="modal">
         <div class="modal-content">
-            <span style="font-size: 22px; font-weight: bold; color: #1a1a1a; margin-bottom: 15px; display: block;">FreeSave.com</span>
-            <p style="text-align: left; margin-bottom: 10px;">
-                <strong>Owner:</strong> <a href="https://www.facebook.com/profile.php?id=61554658855824" target="_blank" style="color:#000; font-weight:700; text-decoration:none;">Kayra Haque</a>
+            <span style="font-size: 22px; font-weight: bold; color: #1a1a1a; margin-bottom: 15px; display: block;">Our Mission</span>
+            <p style="text-align: left; margin-bottom: 15px; font-size: 14px; line-height: 1.6;">
+                FreeSave was created to make the video downloading process easy and fast for people all over the world. Our service is open to everyone with no hidden costs. We believe that saving your favorite moments or essential videos for offline viewing should be absolutely simple.
             </p>
-            <p style="text-align: left; margin-bottom: 10px;">
-                <strong>Email:</strong> <a href="mailto:sitefreedownloader@gmail.com" style="color:#000; font-weight:700; text-decoration:underline;">sitefreedownloader@gmail.com</a>
-            </p>
+            <span style="font-size: 18px; font-weight: bold; color: #1a1a1a; margin-bottom: 10px; display: block; text-align: left;">Why Use FreeSave?</span>
+            <ul style="text-align: left; margin-bottom: 15px; font-size: 14px; line-height: 1.6; padding-left: 20px;">
+                <li><strong>Simple Interface:</strong> Anyone can use it without any technical knowledge.</li>
+                <li><strong>Speed & Efficiency:</strong> We strive to process your video in the shortest possible time.</li>
+                <li><strong>Global Access:</strong> You can use our tool from anywhere in the world.</li>
+            </ul>
+            <div style="border-top: 1px solid #eee; padding-top: 15px; text-align: left; font-size: 13px;">
+                <p style="margin: 5px 0;"><strong>Owner:</strong> <a href="https://www.facebook.com/profile.php?id=61554658855824" target="_blank" style="color:#000; font-weight:700; text-decoration:none;">Kayra Haque</a></p>
+                <p style="margin: 5px 0;"><strong>Email:</strong> <a href="mailto:sitefreedownloader@gmail.com" style="color:#000; font-weight:700; text-decoration:underline;">sitefreedownloader@gmail.com</a></p>
+            </div>
             <button type="button" class="auth-btn" onclick="toggleAbout(false)" style="margin-top: 25px; width: 100%;">Close</button>
         </div>
     </div>
@@ -201,7 +271,13 @@
         const auth = getAuth(app);
 
         window.addEventListener('DOMContentLoaded', () => { 
-            if (localStorage.getItem("isUserSaved") === "true") { document.getElementById("headerTitle").innerText = "WELCOME BACK"; } 
+            // লগইন চেক এবং বাটন পরিবর্তন
+            if (localStorage.getItem("isUserSaved") === "true") { 
+                document.getElementById("headerTitle").innerText = "WELCOME BACK"; 
+                document.getElementById("authFields").style.display = "none";
+                document.getElementById("startBtnContainer").style.display = "block";
+            } 
+
             var savedLang = localStorage.getItem("currentLang") || "en";
             updateLangTick(savedLang);
             if (savedLang !== 'en') {
@@ -226,12 +302,33 @@
         function toggleAbout(show) { document.getElementById("aboutModal").style.display = show ? "block" : "none"; }
         function togglePass() { var p = document.getElementById("passInput"); p.type = (p.type === "password") ? "text" : "password"; document.querySelector(".toggle-txt").innerText = (p.type === "password") ? "Show" : "Hide"; }
         function toggleSideMenu(open) { document.getElementById("sideMenu").style.width = open ? "280px" : "0"; }
+        
         function toggleLangList() {
             var list = document.getElementById("langList");
-            var arrow = document.getElementById("arrow");
+            var arrow = document.getElementById("arrowLang");
             list.style.display = (list.style.display === "flex") ? "none" : "flex";
             arrow.innerText = (list.style.display === "flex") ? "▴" : "▾";
         }
+
+        function toggleHowTo() {
+            var content = document.getElementById("howToContent");
+            var arrow = document.getElementById("arrowHow");
+            content.style.display = (content.style.display === "block") ? "none" : "block";
+            arrow.innerText = (content.style.display === "block") ? "▴" : "▾";
+        }
+
+        function toggleFAQ(num) {
+            var content = document.getElementById("faq" + num);
+            var arrow = document.getElementById("arrowF" + num);
+            if(content.style.display === "block") {
+                content.style.display = "none";
+                arrow.innerText = "▾";
+            } else {
+                content.style.display = "block";
+                arrow.innerText = "▴";
+            }
+        }
+
         function changeLang(langCode) {
             localStorage.setItem("currentLang", langCode);
             updateLangTick(langCode);
@@ -239,23 +336,24 @@
             if(select) { select.value = langCode; select.dispatchEvent(new Event('change')); }
             setTimeout(() => toggleSideMenu(false), 400);
         }
+
         function updateLangTick(langCode) {
             document.querySelectorAll('.lang-option').forEach(el => el.classList.remove('active'));
             var activeEl = document.getElementById(langCode);
             if(activeEl) activeEl.classList.add('active');
         }
+
         function googleTranslateElementInit() { new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element'); }
-    </script>
-    <script>
-    const switchBtn = document.getElementById("dark-mode-switch");
-    const body = document.body;
-    if (localStorage.getItem("theme") === "dark") { body.classList.add("dark-theme"); if(switchBtn) switchBtn.checked = true; }
-    if(switchBtn) {
-        switchBtn.addEventListener("change", () => {
-            if (switchBtn.checked) { body.classList.add("dark-theme"); localStorage.setItem("theme", "dark"); }
-            else { body.classList.remove("dark-theme"); localStorage.setItem("theme", "light"); }
-        });
-    }
+
+        const switchBtn = document.getElementById("dark-mode-switch");
+        const body = document.body;
+        if (localStorage.getItem("theme") === "dark") { body.classList.add("dark-theme"); if(switchBtn) switchBtn.checked = true; }
+        if(switchBtn) {
+            switchBtn.addEventListener("change", () => {
+                if (switchBtn.checked) { body.classList.add("dark-theme"); localStorage.setItem("theme", "dark"); }
+                else { body.classList.remove("dark-theme"); localStorage.setItem("theme", "light"); }
+            });
+        }
     </script>
 </body>
-            </html>
+    </html>
