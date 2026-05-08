@@ -163,6 +163,7 @@
 
     <script>
         const finalLink = localStorage.getItem("downloadableUrl");
+        // এপিআই থেকে আসা টাইটেল নেওয়া (যা এখন ফিক্সড করা হয়েছে)
         let videoTitle = localStorage.getItem("videoTitle") || "FreeSave_Download";
         const apiBaseUrl = "https://my-downloader-api-ascp.onrender.com";
 
@@ -174,30 +175,27 @@
                 const audioIcon = document.getElementById("audioIcon");
                 const statusLabel = document.getElementById("statusLabel");
 
-                // অডিও নাকি ভিডিও চেক করা
-                const isAudio = videoTitle.toLowerCase().endsWith('.mp3') || finalLink.includes("audio");
+                // অডিও চেক করার লজিক (নামের শেষ অংশ দেখে)
+                const isAudio = videoTitle.toLowerCase().endsWith('.mp3');
 
                 if (isAudio) {
                     player.style.display = "none";
                     audioIcon.style.display = "flex";
                     statusLabel.innerText = "✓ MP3 Audio Ready to Download";
-                    // অডিও হলে নামটা নিশ্চিত করা
-                    if (!videoTitle.toLowerCase().endsWith('.mp3')) videoTitle += ".mp3";
                 } else {
                     player.style.display = "block";
                     audioIcon.style.display = "none";
                     source.src = finalLink;
                     player.load();
-                    // ভিডিও হলে নামটা নিশ্চিত করা
-                    if (!videoTitle.toLowerCase().endsWith('.mp4')) videoTitle += ".mp4";
+                    statusLabel.innerText = "✓ Video Ready to Download";
                 }
 
-                // এপিআই-তে সঠিক লিঙ্ক এবং নাম পাঠানো
+                // এপিআই-তে ক্লিন নাম পাঠিয়ে লিঙ্ক তৈরি
                 const finalApiLink = apiBaseUrl + "/force_download?url=" + encodeURIComponent(finalLink) + "&filename=" + encodeURIComponent(videoTitle);
                 
                 btn.href = finalApiLink;
                 
-                // ক্রোম ডাউনলোড লিস্টে দেখানোর জন্য ডাউনলোড অ্যাট্রিবিউট
+                // ব্রাউজার ডাউনলোড ট্র্যাকিংয়ের জন্য ডাউনলোড অ্যাট্রিবিউট নিশ্চিত করা
                 btn.setAttribute("download", videoTitle);
 
                 btn.onclick = function() {
