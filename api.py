@@ -1,24 +1,33 @@
-from flask import Flask, request, jsonify, make_response,Response
+from flask import Flask, request, jsonify, make_response, Response
 from flask_cors import CORS
 import yt_dlp
 import os
-
 import requests
 
 app = Flask(__name__)
-# CORS সেটিংস যাতে অন্য যেকোনো ওয়েবসাইট থেকে তোর এপিআই কল করা যায়
+# CORS সেটিংস যাতে অন্য যেকোনো ওয়েবসাইট থেকে এপিআই কল করা যায়
 CORS(app)
 
 @app.route('/download', methods=['GET'])
 def download():
     video_url = request.args.get('url')
+    # ফ্রন্টএন্ড থেকে পাঠানো কোয়ালিটি (যেমন: 720, 1080) রিসিভ করা
+    requested_quality = request.args.get('quality')
     
     if not video_url:
         return jsonify({"success": False, "error": "URL missing"}), 400
 
+    # কোয়ালিটি লজিক সেট করা
+    # যদি ইউজার কোয়ালিটি সিলেক্ট করে, তবে সেই উচ্চতার নিচের সেরা ভিডিও + অডিও নেবে।
+    # অন্যথায় আগের মতো 'best' কাজ করবে।
+    if requested_quality and requested_quality.isdigit():
+        format_selection = f'bestvideo[height<={requested_quality}]+bestaudio/best[height<={requested_quality}]/best'
+    else:
+        format_selection = 'best'
+
     # yt-dlp কনফিগারেশন: ফেসবুক, টিকটক ও সব প্ল্যাটফর্মের জন্য
     ydl_opts = {
-        'format': 'best',
+        'format': format_selection,
         'quiet': True,
         'no_warnings': True,
         'extract_flat': False,
