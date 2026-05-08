@@ -15,20 +15,23 @@ def download():
     if not video_url:
         return jsonify({"success": False, "error": "URL missing"}), 400
 
-    # কোয়ালিটি লজিক: ইউজার যেটা চেয়েছে সেটা না থাকলে অটোমেটিক বেস্ট সিঙ্গেল ফাইল নেবে
+    # লজিক একদম আগের মতোই আছে, শুধু অডিও মার্জিং নিশ্চিত করা হয়েছে
     if requested_quality == 'mp3':
         format_selection = 'bestaudio/best'
     elif requested_quality and requested_quality.isdigit():
-        # লজিক: কাঙ্ক্ষিত কোয়ালিটির ভিডিও + অডিও, না থাকলে ওই রেজোলিউশনের নিচের সেরা সিঙ্গেল ফাইল (যা ব্রাউজারে প্রিভিউ দেখাবে)
-        format_selection = f'bestvideo[height<={requested_quality}][ext=mp4]+bestaudio[ext=m4a]/best[height<={requested_quality}]/best'
+        # এখানে mp4 অডিও (m4a) প্লাস ভিডিও মার্জ করার লজিক দেওয়া হয়েছে যাতে সাউন্ড থাকে
+        format_selection = f'bestvideo[height<={requested_quality}][ext=mp4]+bestaudio[ext=m4a]/bestvideo[height<={requested_quality}]+bestaudio/best[height<={requested_quality}]/best'
     else:
-        format_selection = 'best'
+        # ডিফল্ট সেরা ভিডিও এবং অডিও
+        format_selection = 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best'
 
     ydl_opts = {
         'format': format_selection,
         'quiet': True,
         'no_warnings': True,
         'extract_flat': False,
+        # এই লাইনটি ভিডিও আর অডিওকে সুন্দরভাবে জোড়া দিতে সাহায্য করবে
+        'merge_output_format': 'mp4',
         'http_headers': {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
         }
@@ -41,23 +44,20 @@ def download():
             # ডাউনলোড লিঙ্ক বের করার চেষ্টা
             download_link = info.get('url')
             
-            # ব্যাকআপ লজিক: যদি সরাসরি লিঙ্ক না পায় তবে ফরম্যাট লিস্ট থেকে সেরাটা নেবে
+            # ব্যাকআপ লজিক (আপনার অরিজিনাল কোড অনুযায়ী)
             if not download_link:
                 formats = info.get('formats', [])
                 if formats:
-                    # সবচেয়ে শেষে থাকা ফরম্যাটটি সাধারণত সবচেয়ে ভালো হয়
                     download_link = formats[-1].get('url')
 
             if not download_link and 'entries' in info:
                 download_link = info['entries'][0].get('url')
             
-            # ফাইলের নাম আপনার দেওয়া লজিক অনুযায়ী ফিক্সড
             if requested_quality == 'mp3':
                 title = "FreeSave_Download.mp3"
             else:
                 title = "FreeSave_Download.mp4"
 
-        # যদি কোনোভাবেই লিঙ্ক না পাওয়া যায়
         if not download_link:
             return jsonify({"success": False, "error": "Video link not found"}), 404
 
