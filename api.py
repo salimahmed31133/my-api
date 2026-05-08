@@ -15,23 +15,21 @@ def download():
     if not video_url:
         return jsonify({"success": False, "error": "URL missing"}), 400
 
-    # লজিক একদম আগের মতোই আছে, শুধু অডিও মার্জিং নিশ্চিত করা হয়েছে
+    # সাউন্ড নিশ্চিত করার জন্য লজিক আপডেট করা হয়েছে
+    # এটি ভিডিও এবং অডিও আলাদাভাবে না খুঁজে, সরাসরি সাউন্ডসহ ফাইলটি খুঁজবে
     if requested_quality == 'mp3':
         format_selection = 'bestaudio/best'
     elif requested_quality and requested_quality.isdigit():
-        # এখানে mp4 অডিও (m4a) প্লাস ভিডিও মার্জ করার লজিক দেওয়া হয়েছে যাতে সাউন্ড থাকে
-        format_selection = f'bestvideo[height<={requested_quality}][ext=mp4]+bestaudio[ext=m4a]/bestvideo[height<={requested_quality}]+bestaudio/best[height<={requested_quality}]/best'
+        # এই লজিকটি সেই ফাইলটি নেবে যেখানে অডিও ও ভিডিও একসাথে আছে (Single File)
+        format_selection = f'best[height<={requested_quality}][ext=mp4]/best[height<={requested_quality}]/best'
     else:
-        # ডিফল্ট সেরা ভিডিও এবং অডিও
-        format_selection = 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best'
+        format_selection = 'best[ext=mp4]/best'
 
     ydl_opts = {
         'format': format_selection,
         'quiet': True,
         'no_warnings': True,
         'extract_flat': False,
-        # এই লাইনটি ভিডিও আর অডিওকে সুন্দরভাবে জোড়া দিতে সাহায্য করবে
-        'merge_output_format': 'mp4',
         'http_headers': {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
         }
