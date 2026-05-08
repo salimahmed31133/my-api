@@ -50,11 +50,13 @@ def download():
             if not download_link and 'entries' in info:
                 download_link = info['entries'][0].get('url')
             
-            title = info.get('title', 'Video_Download')
+            title = info.get('title', 'FreeSave_Download')
 
-        # যদি অডিও হয় তবে টাইটেলের শেষে .mp3 যোগ করা
+        # লজিক: অডিও হলে .mp3 এবং ভিডিও হলে .mp4 এক্সটেনশন নিশ্চিত করা
         if requested_quality == 'mp3':
-            title = title if title.endswith('.mp3') else title + '.mp3'
+            title = title if title.lower().endswith('.mp3') else title + '.mp3'
+        else:
+            title = title if title.lower().endswith('.mp4') else title + '.mp4'
 
         # রেসপন্স ডাটা
         result = {
@@ -75,6 +77,9 @@ def download():
 @app.route('/force_download')
 def force_download():
     video_url = request.args.get('url')
+    # ফাইল নাম রিসিভ করা (সেভ পেজ থেকে আসবে)
+    filename = request.args.get('filename', 'FreeSave_File.mp4')
+    
     if not video_url:
         return "No URL provided", 400
 
@@ -89,10 +94,16 @@ def force_download():
             for chunk in req.iter_content(chunk_size=8192):
                 yield chunk
 
+        # লজিক: নাম দেখে Content-Type ঠিক করা যাতে অডিও অডিও হিসেবেই ডাউনলোড হয়
+        if filename.lower().endswith('.mp3'):
+            content_type = 'audio/mpeg'
+        else:
+            content_type = 'video/mp4'
+
         # রেসপন্স হেডার তৈরি করা
         headers = {
-            'Content-Disposition': 'attachment; filename="FreeSave_Download.mp4"',
-            'Content-Type': 'video/mp4',
+            'Content-Disposition': f'attachment; filename="{filename}"',
+            'Content-Type': content_type,
         }
         
         # যদি সাইজ পাওয়া যায়, তবে তা ব্রাউজারকে জানিয়ে দেওয়া
