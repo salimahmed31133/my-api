@@ -1,46 +1,234 @@
-<!DOCTYPE html> <html lang="en"> <head> <script async src="https://www.googletagmanager.com/gtag/js?id=G-CFGFT13CS4"></script> <script> window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-CFGFT13CS4'); </script> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Save Video - FreeDownloaderSite</title> <style> body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f8f9fa; margin: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; padding-bottom: 40px; } .site-name-top { font-size: 28px; font-weight: 800; color: #1a1a1a; margin-top: 40px; text-align: center; width: 95%; } .disclaimer { font-size: 13px; color: #666; text-align: center; width: 85%; margin: 12px 0 30px 0; font-style: italic; font-weight: 500; } .auth-card { background: white; padding: 35px 25px; border-radius: 30px; box-shadow: 0 15px 50px rgba(0,0,0,0.06); width: 90%; max-width: 450px; text-align: center; box-sizing: border-box; border: 1px solid #eee; } .success-text { color: #2ecc71; font-weight: bold; font-size: 16px; margin-bottom: 20px; display: block; } .video-preview-container { width: 100%; border-radius: 20px; background: #000; margin-bottom: 20px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.1); position: relative; min-height: 200px; border: 1px solid #eee; } video { width: 100%; display: block; max-height: 400px; background: #000; } .download-btn { background: #1a1a1a !important; color: white !important; border: 2.5px solid #D4AF37 !important; padding: 20px; width: 100%; border-radius: 18px; font-size: 22px; font-weight: 800; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 8px 20px rgba(0,0,0,0.2); transition: 0.3s; margin-top: 10px; outline: none; display: block; text-decoration: none; text-align: center; box-sizing: border-box; } .download-btn:active { transform: scale(0.97); } .download-btn:disabled { background: #555 !important; border-color: #777 !important; cursor: not-allowed; } .new-download { margin-top: 25px; display: inline-block; color: #1a1a1a !important; text-decoration: none; font-size: 16px; font-weight: 800; border-bottom: 2px solid #1a1a1a; padding-bottom: 2px; } iframe.goog-te-banner-frame { display: none !important; } body { top: 0px !important; } #google_translate_element, .skiptranslate, .goog-te-gadget, .goog-te-banner-frame { display: none !important; } .goog-text-highlight { background-color: transparent !important; box-shadow: none !important; } #goog-gt-tt, .goog-te-balloon-frame, .goog-te-menu-value img { display: none !important; } body.dark-theme { background-color: #121212 !important; color: #f1f1f1 !important; } .dark-theme .auth-card { background-color: #1a1a1a !important; border-color: #444 !important; color: #fff !important; } </style> </head> <body> <div class="site-name-top">FreeDownloaderSite</div> <div class="disclaimer">How you use it is your business and your responsibility.</div> <div class="auth-card"> <span class="success-text" id="successMsg">✓ File Ready to Download</span> <div class="video-preview-container"> <video id="videoPlayer" controls playsinline> <source id="videoSource" src="" type="video/mp4"> </video> </div> <a id="downloadBtn" href="#" class="download-btn">DOWNLOAD</a> <br> <a href="dashboard.html" class="new-download">Download Another</a> </div> <div id="google_translate_element" style="display:none;"></div> <script type="text/javascript"> function googleTranslateElementInit() { new google.translate.TranslateElement({pageLanguage: 'en', autoDisplay: false}, 'google_translate_element'); } </script> <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script> <script> 
-const finalLink = localStorage.getItem("downloadableUrl"); 
-const videoTitle = localStorage.getItem("videoTitle") || "FreeSave_File"; // এপিআই থেকে আসা নাম
-const apiBaseUrl = "https://my-downloader-api-ascp.onrender.com"; 
-
-window.onload = function() { 
-    if (finalLink && finalLink !== "undefined") { 
-        const player = document.getElementById("videoPlayer"); 
-        const source = document.getElementById("videoSource"); 
-        const btn = document.getElementById("downloadBtn"); 
-        const msg = document.getElementById("successMsg");
-
-        source.src = finalLink; 
-        player.load(); 
-
-        // অডিও হলে মেসেজ বদলে দেওয়া (ঐচ্ছিক)
-        if(videoTitle.toLowerCase().endsWith('.mp3')) {
-            msg.innerText = "✓ MP3 Audio Ready to Download";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-CFGFT13CS4"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-CFGFT13CS4');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Save Video - FreeDownloaderSite</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f8f9fa;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding-bottom: 40px;
         }
+        .site-name-top {
+            font-size: 28px;
+            font-weight: 800;
+            color: #1a1a1a;
+            margin-top: 40px;
+            text-align: center;
+            width: 95%;
+        }
+        .disclaimer {
+            font-size: 13px;
+            color: #666;
+            text-align: center;
+            width: 85%;
+            margin: 12px 0 30px 0;
+            font-style: italic;
+            font-weight: 500;
+        }
+        .auth-card {
+            background: white;
+            padding: 35px 25px;
+            border-radius: 30px;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.06);
+            width: 90%;
+            max-width: 450px;
+            text-align: center;
+            box-sizing: border-box;
+            border: 1px solid #eee;
+        }
+        .success-text {
+            color: #2ecc71;
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 20px;
+            display: block;
+        }
+        .video-preview-container {
+            width: 100%;
+            border-radius: 20px;
+            background: #000;
+            margin-bottom: 20px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            position: relative;
+            min-height: 200px;
+            border: 1px solid #eee;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        video {
+            width: 100%;
+            display: block;
+            max-height: 400px;
+            background: #000;
+        }
+        /* অডিও আইকনের জন্য নতুন স্টাইল */
+        #audioIcon {
+            color: white;
+            font-size: 60px;
+            display: none;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .download-btn {
+            background: #1a1a1a !important;
+            color: white !important;
+            border: 2.5px solid #D4AF37 !important;
+            padding: 20px;
+            width: 100%;
+            border-radius: 18px;
+            font-size: 22px;
+            font-weight: 800;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            transition: 0.3s;
+            margin-top: 10px;
+            outline: none;
+            display: block;
+            text-decoration: none;
+            text-align: center;
+            box-sizing: border-box;
+        }
+        .download-btn:active {
+            transform: scale(0.97);
+        }
+        .download-btn:disabled {
+            background: #555 !important;
+            border-color: #777 !important;
+            cursor: not-allowed;
+        }
+        .new-download {
+            margin-top: 25px;
+            display: inline-block;
+            color: #1a1a1a !important;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 800;
+            border-bottom: 2px solid #1a1a1a;
+            padding-bottom: 2px;
+        }
+        iframe.goog-te-banner-frame { display: none !important; }
+        body { top: 0px !important; }
+        #google_translate_element, .skiptranslate, .goog-te-gadget, .goog-te-banner-frame { display: none !important; }
+        .goog-text-highlight { background-color: transparent !important; box-shadow: none !important; }
+        #goog-gt-tt, .goog-te-balloon-frame, .goog-te-menu-value img { display: none !important; }
+        body.dark-theme { background-color: #121212 !important; color: #f1f1f1 !important; }
+        .dark-theme .auth-card { background-color: #1a1a1a !important; border-color: #444 !important; color: #fff !important; }
+    </style>
+</head>
+<body>
+    <div class="site-name-top">FreeDownloaderSite</div>
+    <div class="disclaimer">How you use it is your business and your responsibility.</div>
 
-        // এখানে filename প্যারামিটার যোগ করা হয়েছে
-        btn.href = apiBaseUrl + "/force_download?url=" + encodeURIComponent(finalLink) + "&filename=" + encodeURIComponent(videoTitle); 
+    <div class="auth-card">
+        <span class="success-text" id="statusLabel">✓ Video Ready to Download</span>
+        <div class="video-preview-container">
+            <video id="videoPlayer" controls playsinline>
+                <source id="videoSource" src="" type="video/mp4">
+            </video>
+            <div id="audioIcon">🎵<br><span style="font-size: 16px;">MP3 Audio File</span></div>
+        </div>
+        
+        <a id="downloadBtn" href="#" class="download-btn">DOWNLOAD</a>
+        
+        <br>
+        <a href="dashboard.html" class="new-download">Download Another Video</a>
+    </div>
 
-        btn.onclick = function() { 
-            btn.innerText = "STARTING..."; 
-            setTimeout(() => { 
-                btn.innerText = "DOWNLOAD"; 
-            }, 5000); 
-        }; 
-    } else { 
-        window.location.href = "dashboard.html"; 
-    } 
-    
-    var savedLang = localStorage.getItem("currentLang"); 
-    if (savedLang && savedLang !== 'en') { 
-        var checkGoogleInterval = setInterval(function() { 
-            var selectField = document.querySelector("select.goog-te-combo"); 
-            if (selectField) { 
-                selectField.value = savedLang; 
-                selectField.dispatchEvent(new Event('change')); 
-                clearInterval(checkGoogleInterval); 
-            } 
-        }, 500); 
-    } 
-}; 
-</script> <script> window.addEventListener('DOMContentLoaded', () => { if (localStorage.getItem("theme") === "dark") { document.body.classList.add("dark-theme"); } }); </script> </body> </html>
+    <div id="google_translate_element" style="display:none;"></div>
+
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({pageLanguage: 'en', autoDisplay: false}, 'google_translate_element');
+        }
+    </script>
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+    <script>
+        const finalLink = localStorage.getItem("downloadableUrl");
+        let videoTitle = localStorage.getItem("videoTitle") || "FreeSave_Download";
+        const apiBaseUrl = "https://my-downloader-api-ascp.onrender.com";
+
+        window.onload = function() {
+            if (finalLink && finalLink !== "undefined") {
+                const player = document.getElementById("videoPlayer");
+                const source = document.getElementById("videoSource");
+                const btn = document.getElementById("downloadBtn");
+                const audioIcon = document.getElementById("audioIcon");
+                const statusLabel = document.getElementById("statusLabel");
+
+                // অডিও নাকি ভিডিও চেক করা
+                const isAudio = videoTitle.toLowerCase().endsWith('.mp3') || finalLink.includes("audio");
+
+                if (isAudio) {
+                    player.style.display = "none";
+                    audioIcon.style.display = "flex";
+                    statusLabel.innerText = "✓ MP3 Audio Ready to Download";
+                    // অডিও হলে নামটা নিশ্চিত করা
+                    if (!videoTitle.toLowerCase().endsWith('.mp3')) videoTitle += ".mp3";
+                } else {
+                    player.style.display = "block";
+                    audioIcon.style.display = "none";
+                    source.src = finalLink;
+                    player.load();
+                    // ভিডিও হলে নামটা নিশ্চিত করা
+                    if (!videoTitle.toLowerCase().endsWith('.mp4')) videoTitle += ".mp4";
+                }
+
+                // এপিআই-তে সঠিক লিঙ্ক এবং নাম পাঠানো
+                const finalApiLink = apiBaseUrl + "/force_download?url=" + encodeURIComponent(finalLink) + "&filename=" + encodeURIComponent(videoTitle);
+                
+                btn.href = finalApiLink;
+                
+                // ক্রোম ডাউনলোড লিস্টে দেখানোর জন্য ডাউনলোড অ্যাট্রিবিউট
+                btn.setAttribute("download", videoTitle);
+
+                btn.onclick = function() {
+                    btn.innerText = "STARTING...";
+                    setTimeout(() => { btn.innerText = "DOWNLOAD"; }, 5000);
+                };
+
+            } else {
+                window.location.href = "dashboard.html";
+            }
+
+            var savedLang = localStorage.getItem("currentLang");
+            if (savedLang && savedLang !== 'en') {
+                var checkGoogleInterval = setInterval(function() {
+                    var selectField = document.querySelector("select.goog-te-combo");
+                    if (selectField) {
+                        selectField.value = savedLang;
+                        selectField.dispatchEvent(new Event('change'));
+                        clearInterval(checkGoogleInterval);
+                    }
+                }, 500);
+            }
+        };
+    </script>
+
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            if (localStorage.getItem("theme") === "dark") {
+                document.body.classList.add("dark-theme");
+            }
+        });
+    </script>
+</body>
+</html>
