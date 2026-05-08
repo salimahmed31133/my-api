@@ -1,82 +1,265 @@
-<!DOCTYPE html> <html lang="en"> <head> <script async src="https://www.googletagmanager.com/gtag/js?id=G-CFGFT13CS4"></script> <script> window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-CFGFT13CS4'); </script> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Dashboard - FreeDownloaderSite</title> <style> body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f8f9fa; margin: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; padding-bottom: 40px; } /* টাইটেল সেকশন: সোনালী বর্ডার ছাড়া একদম সলিড ঘন কালো */ .site-title-container { margin-top: 35px; width: 95%; display: flex; justify-content: center; } .site-title { font-size: 28px; font-weight: 900; color: #000000; /* একদম ঘন কালো */ text-align: center; letter-spacing: -0.5px; text-shadow: none; /* সব বর্ডার/শ্যাডো সরিয়ে দেওয়া হয়েছে */ } /* সতর্কবার্তা: ঘন কালো এবং শেষে ফুলস্টপ */ .disclaimer { font-size: 14px; color: #000000; font-weight: 700; text-align: center; width: 80%; margin: 12px 0 20px 0; line-height: 1.6; } .auth-card { background: white; padding: 40px 25px; border-radius: 30px; box-shadow: 0 15px 50px rgba(0,0,0,0.06); width: 90%; max-width: 450px; text-align: center; border: 1px solid #eee; box-sizing: border-box; z-index: 1; } .label-text { font-size: 15px; font-weight: 700; color: #000; margin-bottom: 10px; display: block; text-align: left; padding-left: 5px; } .input-container { position: relative; width: 100%; margin-bottom: 25px; } .input-box { width: 100%; padding: 18px 50px 18px 18px; border: 1.5px solid #ddd; border-radius: 18px; box-sizing: border-box; font-size: 16px; outline: none; background: #fafafa; color: #000; } .clear-btn { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); background: #ddd; color: #666; width: 25px; height: 25px; border-radius: 50%; display: none; align-items: center; justify-content: center; cursor: pointer; font-weight: bold; font-size: 14px; transition: 0.2s; } /* Progress Bar Style */ #progressArea { display: none; margin: 20px 0; text-align: left; background: #f0f0f0; padding: 15px; border-radius: 15px; } .progress-label { font-size: 14px; font-weight: 700; color: #333; margin-bottom: 8px; display: flex; justify-content: space-between; } .progress-bg { width: 100%; background: #e0e0e0; height: 12px; border-radius: 6px; overflow: hidden; } .progress-fill { width: 0%; height: 100%; background: #28a745; transition: width 0.3s ease; } select { width: 100%; padding: 18px; margin-bottom: 25px; border: 1.5px solid #ddd; border-radius: 18px; box-sizing: border-box; font-size: 16px; outline: none; background: #fafafa; color: #000; font-weight: 600; } /* বাটন: সোনালী বর্ডার সহ */ .main-btn { background: #000000; color: white; border: 2.5px solid #D4AF37; padding: 20px; width: 100%; border-radius: 18px; font-size: 20px; font-weight: 800; cursor: pointer; margin-top: 10px; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 8px 20px rgba(0,0,0,0.15); transition: 0.3s; } .main-btn:disabled { background: #555; cursor: not-allowed; } .ad-slot { width: 90%; max-width: 450px; min-height: 70px; background: #f0f0f0; border: 1px dashed #ccc; margin: 15px 0; border-radius: 15px; display: flex; align-items: center; justify-content: center; color: #888; font-size: 12px; } /* গুগল ট্রান্সলেটের উপরের বার চিরতরে বন্ধ করার শক্তিশালী কোড */ iframe.goog-te-banner-frame { display: none !important; } body { top: 0px !important; } #google_translate_element, .skiptranslate, .goog-te-gadget, .goog-te-banner-frame { display: none !important; } /* ট্রান্সলেশনের সময় টেক্সট হাইলাইট বা পপআপ বন্ধ করতে */ .goog-text-highlight { background-color: transparent !important; box-shadow: none !important; } #goog-gt-tt, .goog-te-balloon-frame, .goog-te-menu-value img { display: none !important; } 
-/* ডার্ক মোড অ্যাক্টিভ হলে এই স্টাইলগুলো কাজ করবে */
-body.dark-theme { 
-    background-color: #121212 !important; 
-    color: #f1f1f1 !important; 
-}
-
-.dark-theme header { 
-    background-color: #1a1a1a !important; 
-    border-bottom: 1px solid #333 !important; 
-}
-
-/* ড্যাশবোর্ডের কার্ড বা বক্স থাকলে সেগুলোকেও ডার্ক করার জন্য */
-.dark-theme .auth-card, .dark-theme .trial-card, .dark-theme .ad-slot {
-    background-color: #1a1a1a !important;
-    border-color: #444 !important;
-    color: #fff !important;
-}
-
-.dark-theme input {
-    background-color: #222 !important;
-    border-color: #444 !important;
-    color: #fff !important;
-}
-
-    /* নাইট মোড বা ডার্ক মোডের জন্য অটোমেটিক টেক্সট কালার পরিবর্তন */
-@media (prefers-color-scheme: dark) {
-    body {
-        background-color: #121212 !important;
-        color: #ffffff !important;
-    }
-
-    /* কার্ড বা মেইন বক্সের ব্যাকগ্রাউন্ড ডার্ক করা */
-    .auth-card {
-        background-color: #1a1a1a !important;
-        border-color: #333 !important;
-        box-shadow: 0 15px 50px rgba(0,0,0,0.5) !important;
-    }
-
-    /* সব ধরণের লেখা সাদা করা */
-    h1, h2, h3, p, label, .site-name-top, .success-text, span, div {
-        color: #ffffff !important;
-    }
-
-    /* ডিসক্লেইমার বা ছোট লেখাগুলো একটু হালকা সাদা করা */
-    .disclaimer {
-        color: #bbbbbb !important;
-    }
-
-    /* ইনপুট বক্স এবং ড্রপডাউন ডার্ক ও পরিষ্কার করা */
-    input, select {
-        background-color: #2c2c2c !important;
-        color: #ffffff !important;
-        border: 1px solid #444 !important;
-    }
-
-    /* ইনপুট বক্সের ভেতরের ঝাপসা লেখা (Placeholder) */
-    input::placeholder {
-        color: #888888 !important;
-    }
-
-    /* ড্রপডাউনের ভেতরের অপশনগুলো ঠিক করা */
-    select option {
-        background-color: #1a1a1a;
-        color: #ffffff;
-    }
-}
- </style> </head> <body> <div class="site-title-container"> <div class="site-title">FreeDownloaderSite</div> </div> <div class="ad-slot">Banner Advertisement Space</div> <div class="disclaimer"> How you use it is your business and your responsibility. </div> <div class="auth-card"> <span class="label-text">Select Video Quality:</span> <select id="quality"> <option value="1080">1080p Full HD</option> <option value="720">720p HD</option> <option value="480">480p Standard</option> <option value="mp3">MP3 Audio</option> </select> <span class="label-text">Paste Link:</span> <div class="input-container"> <input type="text" id="videoUrl" class="input-box" placeholder="Paste link here..." oninput="toggleClearBtn()"> <div id="clearBtn" class="clear-btn" onclick="clearInput()">✕</div> </div> <span class="label-text">Select Platform:</span> <select id="platform"> <option value="auto" selected>All in One (Auto Detect)</option> <option value="fb">Facebook</option> <option value="ig">Instagram</option> <option value="cc">CapCut</option> <option value="tk">TikTok</option> </select> <div id="progressArea"> <div class="progress-label"> <span id="statusText">Fetching Video...</span> <span id="percentText">0%</span> </div> <div class="progress-bg"> <div id="progressFill" class="progress-fill"></div> </div> <div id="sizeDetail" style="font-size: 11px; color: #666; margin-top: 5px; font-weight: 600;">0 MB / 0 MB</div> </div> <button class="main-btn" id="processBtn" onclick="startProcess()">PROCESS VIDEO</button> </div> <div class="ad-slot" style="min-height: 100px;">Native Advertisement Space</div> <script> function toggleClearBtn() { const input = document.getElementById('videoUrl'); const clearBtn = document.getElementById('clearBtn'); clearBtn.style.display = input.value.length > 0 ? 'flex' : 'none'; } function clearInput() { document.getElementById('videoUrl').value = ''; toggleClearBtn(); document.getElementById('videoUrl').focus(); } function startProcess() { const rawInput = document.getElementById('videoUrl').value.trim(); const quality = document.getElementById('quality').value; const platform = document.getElementById('platform').value; const btn = document.getElementById('processBtn'); const pArea = document.getElementById('progressArea'); const pFill = document.getElementById('progressFill'); const sText = document.getElementById('statusText'); const percText = document.getElementById('percentText'); const sDetail = document.getElementById('sizeDetail'); if (!rawInput) { alert("Please paste a video link!"); return; } const urlRegex = /(https?:\/\/[^\s]+)/g; const foundLinks = rawInput.match(urlRegex); if (!foundLinks) { alert("No valid link found!"); return; } const cleanUrl = foundLinks[0]; btn.disabled = true; btn.innerText = "CONNECTING..."; pArea.style.display = "block"; pFill.style.width = "0%"; 
-
-// এপিআই লিঙ্কটি আপডেট করা হয়েছে যাতে quality এবং platform প্যারামিটার কাজ করে
-const apiUrl = `https://my-downloader-api-ascp.onrender.com/download?url=${encodeURIComponent(cleanUrl)}&quality=${quality}&platform=${platform}`; 
-
-const xhr = new XMLHttpRequest(); xhr.open('GET', apiUrl, true); xhr.onprogress = function (e) { if (e.lengthComputable) { const percent = Math.floor((e.loaded / e.total) * 100); pFill.style.width = percent + "%"; percText.innerText = percent + "%"; sText.innerText = "Downloading Data..."; sDetail.innerText = (e.loaded / (1024 * 1024)).toFixed(2) + " MB / " + (e.total / (1024 * 1024)).toFixed(2) + " MB"; } else { sText.innerText = "Processing File..."; } }; xhr.onload = function () { if (this.status === 200) { try { const data = JSON.parse(this.responseText); if (data.success) { pFill.style.width = "100%"; percText.innerText = "100%"; sText.innerText = "Ready to Save!"; localStorage.setItem("downloadableUrl", data.url || data.download_link); localStorage.setItem("videoTitle", data.title || "Video"); setTimeout(() => { window.location.href = "save.html"; }, 500); } else { alert("Error: " + data.error); resetButton(); } } catch(e) { alert("Response Error. Please try again."); resetButton(); } } else { alert("Server Error. Please try again."); resetButton(); } }; xhr.onerror = function () { alert("Connection failed. Check your internet."); resetButton(); }; xhr.send(); } function resetButton() { const btn = document.getElementById('processBtn'); const pArea = document.getElementById('progressArea'); btn.disabled = false; btn.innerText = "PROCESS VIDEO"; pArea.style.display = "none"; } </script> <div id="google_translate_element" style="display:none;"></div> <script type="text/javascript"> function googleTranslateElementInit() { new google.translate.TranslateElement({ pageLanguage: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE, autoDisplay: false }, 'google_translate_element'); } </script> <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script> <script> window.addEventListener('load', function() { // ইনডেক্স পেজ থেকে সেভ করা ভাষা খুঁজে বের করা var savedLang = localStorage.getItem("currentLang"); if (savedLang && savedLang !== 'en') { var checkGoogleInterval = setInterval(function() { var selectField = document.querySelector("select.goog-te-combo"); if (selectField) { selectField.value = savedLang; selectField.dispatchEvent(new Event('change')); clearInterval(checkGoogleInterval); } }, 500); } }); </script>  
-<script>
-    // পৃষ্ঠা লোড হওয়ার সময় চেক করবে ডার্ক মোড অন আছে কি না
-    window.addEventListener('DOMContentLoaded', () => {
-        if (localStorage.getItem("theme") === "dark") {
-            document.body.classList.add("dark-theme");
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-CFGFT13CS4"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-CFGFT13CS4');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - FreeDownloaderSite</title>
+    <style>
+        /* --- ডিফল্ট লাইট মোড (সাদা ব্যাকগ্রাউন্ড ও কালো লেখা) --- */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #ffffff !important; /* একদম সাদা */
+            color: #000000 !important; /* কালো লেখা */
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding-bottom: 40px;
+            transition: background 0.3s ease, color 0.3s ease;
         }
-    });
-</script>
-</body> </html>
+
+        .site-title {
+            font-size: 28px;
+            font-weight: 900;
+            color: #000000 !important;
+            text-align: center;
+            margin-top: 35px;
+        }
+
+        .disclaimer {
+            font-size: 14px;
+            color: #000000 !important;
+            font-weight: 700;
+            text-align: center;
+            width: 80%;
+            margin: 12px 0 20px 0;
+        }
+
+        .auth-card {
+            background: #ffffff !important;
+            padding: 40px 25px;
+            border-radius: 30px;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.06);
+            width: 90%;
+            max-width: 450px;
+            text-align: center;
+            border: 1px solid #eee;
+            box-sizing: border-box;
+        }
+
+        .label-text {
+            font-size: 15px;
+            font-weight: 700;
+            color: #000000 !important;
+            margin-bottom: 10px;
+            display: block;
+            text-align: left;
+        }
+
+        input.input-box, select {
+            width: 100%;
+            padding: 18px;
+            border: 1.5px solid #ddd;
+            border-radius: 18px;
+            background: #fafafa !important;
+            color: #000000 !important;
+            font-size: 16px;
+            outline: none;
+        }
+
+        .main-btn {
+            background: #000000;
+            color: white;
+            border: 2.5px solid #D4AF37;
+            padding: 20px;
+            width: 100%;
+            border-radius: 18px;
+            font-size: 20px;
+            font-weight: 800;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+
+        /* --- অটোমেটিক নাইট মোড লজিক --- */
+        @media (prefers-color-scheme: dark) {
+            body {
+                background-color: #121212 !important;
+                color: #ffffff !important;
+            }
+            .site-title, .disclaimer, .label-text {
+                color: #ffffff !important;
+            }
+            .auth-card {
+                background-color: #1a1a1a !important;
+                border-color: #333 !important;
+                box-shadow: 0 15px 50px rgba(0,0,0,0.5) !important;
+            }
+            input.input-box, select {
+                background-color: #2c2c2c !important;
+                color: #ffffff !important;
+                border: 1px solid #444 !important;
+            }
+            input::placeholder {
+                color: #888888 !important;
+            }
+            select option {
+                background-color: #1a1a1a;
+                color: #ffffff;
+            }
+        }
+
+        /* ম্যানুয়াল ডার্ক থিম ক্লাস (যদি জাভাস্ক্রিপ্ট দিয়ে টগল করেন) */
+        body.dark-theme {
+            background-color: #121212 !important;
+            color: #ffffff !important;
+        }
+        body.dark-theme .auth-card {
+            background-color: #1a1a1a !important;
+        }
+        body.dark-theme .site-title, body.dark-theme .disclaimer, body.dark-theme .label-text {
+            color: #ffffff !important;
+        }
+        body.dark-theme input, body.dark-theme select {
+            background-color: #2c2c2c !important;
+            color: #ffffff !important;
+        }
+
+        /* আগের অন্য সব ছোটখাটো ডিজাইন */
+        .input-container { position: relative; width: 100%; margin-bottom: 25px; }
+        .clear-btn { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); background: #ddd; color: #666; width: 25px; height: 25px; border-radius: 50%; display: none; align-items: center; justify-content: center; cursor: pointer; }
+        #progressArea { display: none; margin: 20px 0; text-align: left; background: #f0f0f0; padding: 15px; border-radius: 15px; }
+        .progress-bg { width: 100%; background: #e0e0e0; height: 12px; border-radius: 6px; overflow: hidden; }
+        .progress-fill { width: 0%; height: 100%; background: #28a745; transition: width 0.3s ease; }
+        .ad-slot { width: 90%; max-width: 450px; min-height: 70px; background: #f0f0f0; border: 1px dashed #ccc; margin: 15px 0; border-radius: 15px; display: flex; align-items: center; justify-content: center; color: #888; font-size: 12px; }
+    </style>
+</head>
+<body>
+    <div class="site-title-container">
+        <div class="site-title">FreeDownloaderSite</div>
+    </div>
+    <div class="ad-slot">Banner Advertisement Space</div>
+    <div class="disclaimer">How you use it is your business and your responsibility.</div>
+    <div class="auth-card">
+        <span class="label-text">Select Video Quality:</span>
+        <select id="quality">
+            <option value="1080">1080p Full HD</option>
+            <option value="720">720p HD</option>
+            <option value="480">480p Standard</option>
+            <option value="mp3">MP3 Audio</option>
+        </select>
+        <span class="label-text">Paste Link:</span>
+        <div class="input-container">
+            <input type="text" id="videoUrl" class="input-box" placeholder="Paste link here..." oninput="toggleClearBtn()">
+            <div id="clearBtn" class="clear-btn" onclick="clearInput()">✕</div>
+        </div>
+        <span class="label-text">Select Platform:</span>
+        <select id="platform">
+            <option value="auto" selected>All in One (Auto Detect)</option>
+            <option value="fb">Facebook</option>
+            <option value="ig">Instagram</option>
+            <option value="cc">CapCut</option>
+            <option value="tk">TikTok</option>
+        </select>
+        <div id="progressArea">
+            <div class="progress-label">
+                <span id="statusText">Fetching Video...</span>
+                <span id="percentText">0%</span>
+            </div>
+            <div class="progress-bg">
+                <div id="progressFill" class="progress-fill"></div>
+            </div>
+            <div id="sizeDetail" style="font-size: 11px; color: #666; margin-top: 5px; font-weight: 600;">0 MB / 0 MB</div>
+        </div>
+        <button class="main-btn" id="processBtn" onclick="startProcess()">PROCESS VIDEO</button>
+    </div>
+    <div class="ad-slot" style="min-height: 100px;">Native Advertisement Space</div>
+
+    <script>
+        function toggleClearBtn() {
+            const input = document.getElementById('videoUrl');
+            const clearBtn = document.getElementById('clearBtn');
+            clearBtn.style.display = input.value.length > 0 ? 'flex' : 'none';
+        }
+        function clearInput() {
+            document.getElementById('videoUrl').value = '';
+            toggleClearBtn();
+            document.getElementById('videoUrl').focus();
+        }
+        function startProcess() {
+            const rawInput = document.getElementById('videoUrl').value.trim();
+            const quality = document.getElementById('quality').value;
+            const platform = document.getElementById('platform').value;
+            const btn = document.getElementById('processBtn');
+            const pArea = document.getElementById('progressArea');
+            const pFill = document.getElementById('progressFill');
+            const sText = document.getElementById('statusText');
+            const percText = document.getElementById('percentText');
+            const sDetail = document.getElementById('sizeDetail');
+
+            if (!rawInput) { alert("Please paste a video link!"); return; }
+            const urlRegex = /(https?:\/\/[^\s]+)/g;
+            const foundLinks = rawInput.match(urlRegex);
+            if (!foundLinks) { alert("No valid link found!"); return; }
+            const cleanUrl = foundLinks[0];
+
+            btn.disabled = true;
+            btn.innerText = "CONNECTING...";
+            pArea.style.display = "block";
+            pFill.style.width = "0%";
+
+            const apiUrl = `https://my-downloader-api-ascp.onrender.com/download?url=${encodeURIComponent(cleanUrl)}&quality=${quality}&platform=${platform}`;
+
+            const xhr = new XMLHttpRequest();
+            xhr.open('GET', apiUrl, true);
+            xhr.onprogress = function (e) {
+                if (e.lengthComputable) {
+                    const percent = Math.floor((e.loaded / e.total) * 100);
+                    pFill.style.width = percent + "%";
+                    percText.innerText = percent + "%";
+                    sText.innerText = "Downloading Data...";
+                    sDetail.innerText = (e.loaded / (1024 * 1024)).toFixed(2) + " MB / " + (e.total / (1024 * 1024)).toFixed(2) + " MB";
+                } else { sText.innerText = "Processing File..."; }
+            };
+            xhr.onload = function () {
+                if (this.status === 200) {
+                    try {
+                        const data = JSON.parse(this.responseText);
+                        if (data.success) {
+                            pFill.style.width = "100%";
+                            percText.innerText = "100%";
+                            sText.innerText = "Ready to Save!";
+                            localStorage.setItem("downloadableUrl", data.url || data.download_link);
+                            localStorage.setItem("videoTitle", data.title || "Video");
+                            setTimeout(() => { window.location.href = "save.html"; }, 500);
+                        } else { alert("Error: " + data.error); resetButton(); }
+                    } catch(e) { alert("Response Error."); resetButton(); }
+                } else { alert("Server Error."); resetButton(); }
+            };
+            xhr.onerror = function () { alert("Connection failed."); resetButton(); };
+            xhr.send();
+        }
+        function resetButton() {
+            const btn = document.getElementById('processBtn');
+            const pArea = document.getElementById('progressArea');
+            btn.disabled = false;
+            btn.innerText = "PROCESS VIDEO";
+            pArea.style.display = "none";
+        }
+
+        // থিম চেক
+        window.addEventListener('DOMContentLoaded', () => {
+            if (localStorage.getItem("theme") === "dark") {
+                document.body.classList.add("dark-theme");
+            }
+        });
+    </script>
+</body>
+</html>
