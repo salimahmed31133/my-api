@@ -11,21 +11,24 @@ CORS(app)
 @app.route('/download', methods=['GET'])
 def download():
     video_url = request.args.get('url')
-    # ফ্রন্টএন্ড থেকে পাঠানো কোয়ালিটি (যেমন: 720, 1080) রিসিভ করা
+    # ফ্রন্টএন্ড থেকে পাঠানো কোয়ালিটি বা এমপিথ্রি রিকোয়েস্ট রিসিভ করা
     requested_quality = request.args.get('quality')
     
     if not video_url:
         return jsonify({"success": False, "error": "URL missing"}), 400
 
-    # কোয়ালিটি লজিক সেট করা
-    # যদি ইউজার কোয়ালিটি সিলেক্ট করে, তবে সেই উচ্চতার নিচের সেরা ভিডিও + অডিও নেবে।
-    # অন্যথায় আগের মতো 'best' কাজ করবে।
-    if requested_quality and requested_quality.isdigit():
+    # কোয়ালিটি ও অডিও লজিক সেট করা
+    if requested_quality == 'mp3':
+        # শুধু অডিও বা গান নেওয়ার জন্য
+        format_selection = 'bestaudio/best'
+    elif requested_quality and requested_quality.isdigit():
+        # ইউজারের সিলেক্ট করা রেজোলিউশন অনুযায়ী ভিডিও
         format_selection = f'bestvideo[height<={requested_quality}]+bestaudio/best[height<={requested_quality}]/best'
     else:
+        # ডিফল্ট সেরা ভিডিও
         format_selection = 'best'
 
-    # yt-dlp কনফিগারেশন: ফেসবুক, টিকটক ও সব প্ল্যাটফর্মের জন্য
+    # yt-dlp কনফিগারেশন
     ydl_opts = {
         'format': format_selection,
         'quiet': True,
@@ -40,7 +43,7 @@ def download():
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             info = ydl.extract_info(video_url, download=False)
             
-            # সরাসরি ভিডিও ইউআরএল এবং টাইটেল সংগ্রহ
+            # সরাসরি ভিডিও/অডিও ইউআরএল এবং টাইটেল সংগ্রহ
             download_link = info.get('url')
             
             # যদি প্লেলিস্ট বা স্লাইডশো হয় তবে প্রথমটি নেবে
@@ -48,6 +51,10 @@ def download():
                 download_link = info['entries'][0].get('url')
             
             title = info.get('title', 'Video_Download')
+
+        # যদি অডিও হয় তবে টাইটেলের শেষে .mp3 যোগ করা
+        if requested_quality == 'mp3':
+            title = title if title.endswith('.mp3') else title + '.mp3'
 
         # রেসপন্স ডাটা
         result = {
@@ -75,7 +82,7 @@ def force_download():
         # ভিডিওর ডেটা স্ট্রিম হিসেবে নেওয়া
         req = requests.get(video_url, stream=True, timeout=30)
         
-        # ভিডিওর মোট সাইজ বের করা (এটিই প্রোগ্রেস বার দেখাবে)
+        # ভিডিওর মোট সাইজ বের করা
         total_size = req.headers.get('content-length')
 
         def generate():
@@ -84,7 +91,7 @@ def force_download():
 
         # রেসপন্স হেডার তৈরি করা
         headers = {
-            'Content-Disposition': 'attachment; filename="FreeSave_Video.mp4"',
+            'Content-Disposition': 'attachment; filename="FreeSave_Download.mp4"',
             'Content-Type': 'video/mp4',
         }
         
