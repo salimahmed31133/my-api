@@ -52,7 +52,10 @@ def download():
             
             title = info.get('title', 'FreeSave_Download')
 
-        # লজিক: অডিও হলে .mp3 এবং ভিডিও হলে .mp4 এক্সটেনশন নিশ্চিত করা
+        # আপনার সাইটের নাম (FreeSave) ফাইলে যোগ করা এবং সঠিক এক্সটেনশন দেওয়া
+        if not title.lower().startswith("freesave"):
+            title = f"FreeSave_{title}"
+
         if requested_quality == 'mp3':
             title = title if title.lower().endswith('.mp3') else title + '.mp3'
         else:
@@ -66,7 +69,6 @@ def download():
             "download_link": download_link
         }
         
-        # স্পেশাল হেডার সেট করা যাতে ডাউনলোড বাটন কাজ করে
         response = make_response(jsonify(result))
         response.headers['Access-Control-Allow-Origin'] = '*'
         return response
@@ -77,45 +79,39 @@ def download():
 @app.route('/force_download')
 def force_download():
     video_url = request.args.get('url')
-    # ফাইল নাম রিসিভ করা (সেভ পেজ থেকে আসবে)
-    filename = request.args.get('filename', 'FreeSave_File.mp4')
+    # ফাইল নাম রিসিভ করা (save.html থেকে আসবে)
+    filename = request.args.get('filename', 'FreeSave_Download.mp4')
     
     if not video_url:
         return "No URL provided", 400
 
     try:
-        # ভিডিওর ডেটা স্ট্রিম হিসেবে নেওয়া
+        # ডেটা স্ট্রিম হিসেবে নেওয়া
         req = requests.get(video_url, stream=True, timeout=30)
-        
-        # ভিডিওর মোট সাইজ বের করা
         total_size = req.headers.get('content-length')
+
+        # লজিক: অডিও হলে audio/mpeg আর ভিডিও হলে video/mp4
+        if filename.lower().endswith('.mp3'):
+            mimetype = 'audio/mpeg'
+        else:
+            mimetype = 'video/mp4'
 
         def generate():
             for chunk in req.iter_content(chunk_size=8192):
                 yield chunk
 
-        # লজিক: নাম দেখে Content-Type ঠিক করা যাতে অডিও অডিও হিসেবেই ডাউনলোড হয়
-        if filename.lower().endswith('.mp3'):
-            content_type = 'audio/mpeg'
-        else:
-            content_type = 'video/mp4'
-
-        # রেসপন্স হেডার তৈরি করা
+        # রেসপন্স তৈরি (mimetype সহ যাতে ব্রাউজার চিনতে পারে)
         headers = {
             'Content-Disposition': f'attachment; filename="{filename}"',
-            'Content-Type': content_type,
         }
-        
-        # যদি সাইজ পাওয়া যায়, তবে তা ব্রাউজারকে জানিয়ে দেওয়া
         if total_size:
             headers['Content-Length'] = total_size
 
-        return Response(generate(), headers=headers)
+        return Response(generate(), headers=headers, mimetype=mimetype)
         
     except Exception as e:
         return str(e), 500
 
 if __name__ == '__main__':
-    # Render-এর পোর্টের সাথে অটোমেটিক কানেক্ট হওয়ার জন্য এই অংশটি মাস্ট
     port = int(os.environ.get('PORT', 10000))
     app.run(host='0.0.0.0', port=port)
