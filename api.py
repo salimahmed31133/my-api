@@ -17,12 +17,12 @@ def download():
     if not video_url:
         return jsonify({"success": False, "error": "URL missing"}), 400
 
-    # কোয়ালিটি ও অডিও লজিক সেট করা
+    # কোয়ালিটি ও অডিও লজিক আপডেট (যাতে কাঙ্ক্ষিত কোয়ালিটি না থাকলেও প্রিভিউ আসে)
     if requested_quality == 'mp3':
         # শুধু অডিও বা গান নেওয়ার জন্য
         format_selection = 'bestaudio/best'
     elif requested_quality and requested_quality.isdigit():
-        # ইউজারের সিলেক্ট করা রেজোলিউশন অনুযায়ী ভিডিও
+        # লজিক: ইউজারের সিলেক্ট করা রেজোলিউশন অথবা তার নিচের সেরা রেজোলিউশন/অরিজিনাল ভিডিও নেবে
         format_selection = f'bestvideo[height<={requested_quality}]+bestaudio/best[height<={requested_quality}]/best'
     else:
         # ডিফল্ট সেরা ভিডিও
@@ -50,7 +50,7 @@ def download():
             if not download_link and 'entries' in info:
                 download_link = info['entries'][0].get('url')
             
-            # --- পরিবর্তন এখানে: ভিডিওর টাইটেল সরাসরি ফিক্সড করে দেওয়া হলো ---
+            # --- ভিডিওর টাইটেল আপনার দেওয়া লজিক অনুযায়ী ফিক্সড রাখা হলো ---
             if requested_quality == 'mp3':
                 title = "FreeSave_Download.mp3"
             else:
