@@ -43,23 +43,19 @@ def download():
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             info = ydl.extract_info(video_url, download=False)
             
-            # সরাসরি ভিডিও/অডিও ইউআরএল এবং টাইটেল সংগ্রহ
+            # সরাসরি ভিডিও/অডিও ইউআরএল সংগ্রহ
             download_link = info.get('url')
             
             # যদি প্লেলিস্ট বা স্লাইডশো হয় তবে প্রথমটি নেবে
             if not download_link and 'entries' in info:
                 download_link = info['entries'][0].get('url')
             
-            title = info.get('title', 'FreeSave_Download')
-
-        # আপনার সাইটের নাম (FreeSave) ফাইলে যোগ করা এবং সঠিক এক্সটেনশন দেওয়া
-        if not title.lower().startswith("freesave"):
-            title = f"FreeSave_{title}"
-
-        if requested_quality == 'mp3':
-            title = title if title.lower().endswith('.mp3') else title + '.mp3'
-        else:
-            title = title if title.lower().endswith('.mp4') else title + '.mp4'
+            # --- পরিবর্তন এখানে: ভিডিওর টাইটেল সরাসরি ফিক্সড করে দেওয়া হলো ---
+            if requested_quality == 'mp3':
+                title = "FreeSave_Download.mp3"
+            else:
+                title = "FreeSave_Download.mp4"
+            # -------------------------------------------------------------
 
         # রেসপন্স ডাটা
         result = {
@@ -69,6 +65,7 @@ def download():
             "download_link": download_link
         }
         
+        # স্পেশাল হেডার সেট করা যাতে ডাউনলোড বাটন কাজ করে
         response = make_response(jsonify(result))
         response.headers['Access-Control-Allow-Origin'] = '*'
         return response
@@ -86,8 +83,10 @@ def force_download():
         return "No URL provided", 400
 
     try:
-        # ডেটা স্ট্রিম হিসেবে নেওয়া
+        # ভিডিওর ডেটা স্ট্রিম হিসেবে নেওয়া
         req = requests.get(video_url, stream=True, timeout=30)
+        
+        # ভিডিওর মোট সাইজ বের করা
         total_size = req.headers.get('content-length')
 
         # লজিক: অডিও হলে audio/mpeg আর ভিডিও হলে video/mp4
@@ -100,10 +99,12 @@ def force_download():
             for chunk in req.iter_content(chunk_size=8192):
                 yield chunk
 
-        # রেসপন্স তৈরি (mimetype সহ যাতে ব্রাউজার চিনতে পারে)
+        # রেসপন্স তৈরি (mimetype সহ যাতে ব্রাউজার ও প্লেয়ার চিনতে পারে)
         headers = {
             'Content-Disposition': f'attachment; filename="{filename}"',
         }
+        
+        # যদি সাইজ পাওয়া যায়, তবে তা ব্রাউজারকে জানিয়ে দেওয়া
         if total_size:
             headers['Content-Length'] = total_size
 
@@ -113,5 +114,6 @@ def force_download():
         return str(e), 500
 
 if __name__ == '__main__':
+    # Render-এর পোর্টের সাথে অটোমেটিক কানেক্ট হওয়ার জন্য এই অংশটি মাস্ট
     port = int(os.environ.get('PORT', 10000))
     app.run(host='0.0.0.0', port=port)
